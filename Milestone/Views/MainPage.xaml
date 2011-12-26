@@ -13,7 +13,7 @@
     >
 	<phone:PhoneApplicationPage.Resources>
 		<DataTemplate x:Key="RepoListDataTemplate">
-			<Grid Margin="12,0,0,12">
+			<Grid Margin="12,0,0,12" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
 				<TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top"/>
 			</Grid>
 		</DataTemplate>

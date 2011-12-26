@@ -23,7 +23,20 @@ namespace Milestone.ViewModel
     /// </summary>
     public class ViewModelLocator
     {
-        public static Dispatcher Dispatcher { get; set; }
+        private static Dispatcher _dispatcher;
+        public static Dispatcher Dispatcher
+        {
+            get { return _dispatcher; }
+            set
+            {
+                if (_dispatcher == value)
+                    return;
+
+                _dispatcher = value;
+                if (_model != null)
+                    _model.Dispatcher = _dispatcher;
+            }
+        }
 
         private static MainViewModel _main;
 

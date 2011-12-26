@@ -17,9 +17,6 @@ namespace Milestone.ViewModel
             if (Model == null)
                 return;
 
-            if (Model.Dispatcher == null)
-                Model.Dispatcher = ViewModelLocator.Dispatcher;
-
             RefreshRepositories();
         }
 

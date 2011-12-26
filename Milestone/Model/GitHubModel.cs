@@ -24,6 +24,7 @@ namespace Milestone.Model
 
         private GitHubClient _client;
         public User AuthenticatedUser { get; private set; }
+        public ObservableCollection<User> Contexts { get; private set; }
 
         public ObservableCollection<Repository> UserRepositories { get; private set; }
         public ObservableCollection<Repository> WatchedRepositories { get; private set; }
@@ -36,6 +37,7 @@ namespace Milestone.Model
         {
             _client = new GitHubClient();
 
+            Contexts = new ObservableCollection<User>();
             UserRepositories = new ObservableCollection<Repository>();
             WatchedRepositories = new ObservableCollection<Repository>();
         }
@@ -52,6 +54,27 @@ namespace Milestone.Model
                         AuthenticatedUser = u;
                         _username = username;
                         _password = password;
+                        Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                Contexts.Clear();
+                                Contexts.Add(u);
+                            }));
+
+                        _client.Organizations.GetOrganizationsAsync(AuthenticatedUser.Login,
+                            new Action<IEnumerable<User>>(
+                                orgs =>
+                                {
+                                    Dispatcher.BeginInvoke(new Action(() =>
+                                        {
+                                            foreach (var org in orgs)
+                                                Contexts.Add(org);
+                                        }));
+                                }),
+                            new Action<GitHubException>(
+                                ex =>
+                                {
+                                    MessageBox.Show("Error: " + ex.Message);
+                                }));
 
                         if (onComplete != null)
                             onComplete(IsAuthenticated);
@@ -61,9 +84,7 @@ namespace Milestone.Model
                     {
                         if (ex.ErrorType == ErrorType.Unauthorized)
                         {
-                            IsAuthenticated = false;
-                            AuthenticatedUser = null;
-                            _username = _password = null;
+                            Logout();
 
                             if (onComplete != null)
                                 onComplete(IsAuthenticated);
@@ -76,6 +97,8 @@ namespace Milestone.Model
             IsAuthenticated = false;
             _username = _password = null;
 
+            AuthenticatedUser = null;
+            Contexts.Clear();
             UserRepositories.Clear();
             WatchedRepositories.Clear();
 
@@ -162,7 +185,10 @@ namespace Milestone.Model
                 bw.Write(AuthFileVersion);
                 bw.Write(_username);
                 bw.Write(_password);
-                AuthenticatedUser.Save(bw);
+
+                bw.Write(Contexts.Count);
+                for (int i = 0; i < Contexts.Count; i++)
+                    Contexts[i].Save(bw);
 
                 bw.Close();
             }
@@ -221,8 +247,14 @@ namespace Milestone.Model
                     _password = br.ReadString();
                     IsAuthenticated = true;
 
-                    AuthenticatedUser = new User();
-                    AuthenticatedUser.Load(br, fileVer);
+                    var numContexts = br.ReadInt32();
+                    Contexts.Clear();
+                    for (int i = 0; i < numContexts; i++)
+                    {
+                        var usr = new User();
+                        usr.Load(br, fileVer);
+                    }
+                    AuthenticatedUser = Contexts[0];
 
                     br.Close();
                 }
