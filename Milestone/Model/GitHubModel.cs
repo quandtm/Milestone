@@ -116,7 +116,7 @@ namespace Milestone.Model
 
             foreach (var context in Contexts)
             {
-                _client.Users.GetRepositoriesAsync(AuthenticatedUser.Login,
+                _client.Users.GetRepositoriesAsync(context.User.Login,
                     new Action<IEnumerable<Repository>>(
                         repos =>
                         {
@@ -128,7 +128,7 @@ namespace Milestone.Model
                                     }));
                         }), exceptionAction);
 
-                _client.Users.GetWatchedRepositoriesAsync(AuthenticatedUser.Login,
+                _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
                     new Action<IEnumerable<Repository>>(
                         repos =>
                         {
@@ -150,16 +150,29 @@ namespace Milestone.Model
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 SaveAuth(iso);
-                SaveRepoTOC(iso);
+                SaveRepos(iso);
             }
         }
 
-        private void SaveRepoTOC(IsolatedStorageFile iso)
+        private void SaveRepos(IsolatedStorageFile iso)
         {
             using (var stream = iso.OpenFile(RepoFilename, FileMode.Create, FileAccess.Write))
             using (var bw = new BinaryWriter(stream))
             {
                 bw.Write(RepoFileVersion);
+
+                bw.Write(Contexts.Count);
+                foreach (var context in Contexts)
+                {
+                    bw.Write(context.User.Login);
+                    bw.Write(context.MyRepositories.Count);
+                    for (int i = 0; i < context.MyRepositories.Count; i++)
+                        context.MyRepositories[i].Save(bw);
+
+                    bw.Write(context.WatchedRepositories.Count);
+                    for (int i = 0; i < context.WatchedRepositories.Count; i++)
+                        context.WatchedRepositories[i].Save(bw);
+                }
 
                 bw.Close();
             }
@@ -187,11 +200,11 @@ namespace Milestone.Model
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 LoadAuth(iso);
-                LoadRepoTOC(iso);
+                LoadRepos(iso);
             }
         }
 
-        private void LoadRepoTOC(IsolatedStorageFile iso)
+        private void LoadRepos(IsolatedStorageFile iso)
         {
             if (!iso.FileExists(RepoFilename))
                 return;
@@ -200,6 +213,35 @@ namespace Milestone.Model
             using (var br = new BinaryReader(stream))
             {
                 var fileVer = br.ReadInt32();
+                var numContexts = br.ReadInt32();
+                for (int i = 0; i < numContexts; i++)
+                {
+                    var login = br.ReadString();
+                    foreach (var context in Contexts)
+                    {
+                        if (context.User.Login.Equals(login))
+                        {
+                            var numMyRepos = br.ReadInt32();
+                            context.MyRepositories.Clear();
+                            for (int j = 0; j < numMyRepos; j++)
+                            {
+                                var repo = new Repository();
+                                repo.Load(br, fileVer);
+                                context.MyRepositories.Add(repo);
+                            }
+
+                            var numWatchedRepos = br.ReadInt32();
+                            context.WatchedRepositories.Clear();
+                            for (int j = 0; j < numWatchedRepos; j++)
+                            {
+                                var repo = new Repository();
+                                repo.Load(br, fileVer);
+                                context.WatchedRepositories.Add(repo);
+                            }
+                            break;
+                        }
+                    }
+                }
 
                 br.Close();
             }
