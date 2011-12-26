@@ -17,8 +17,8 @@ namespace Milestone.Model
     {
         private const string AuthFilename = "auth.dat";
         private const int AuthFileVersion = 1;
-        private const string RepoTOCFilename = "repotoc.dat";
-        private const int RepoTOCFileVersion = 1;
+        private const string RepoFilename = "repotoc.dat";
+        private const int RepoFileVersion = 1;
 
         public bool IsAuthenticated { get; private set; }
 
@@ -82,7 +82,7 @@ namespace Milestone.Model
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 iso.DeleteFile(AuthFilename);
-                iso.DeleteFile(RepoTOCFilename);
+                iso.DeleteFile(RepoFilename);
             }
         }
 
@@ -137,10 +137,10 @@ namespace Milestone.Model
 
         private void SaveRepoTOC(IsolatedStorageFile iso)
         {
-            using (var stream = iso.OpenFile(RepoTOCFilename, FileMode.Create, FileAccess.Write))
+            using (var stream = iso.OpenFile(RepoFilename, FileMode.Create, FileAccess.Write))
             using (var bw = new BinaryWriter(stream))
             {
-                bw.Write(RepoTOCFileVersion);
+                bw.Write(RepoFileVersion);
 
                 bw.Write(UserRepositories.Count);
                 for (int i = 0; i < UserRepositories.Count; i++)
@@ -179,10 +179,10 @@ namespace Milestone.Model
 
         private void LoadRepoTOC(IsolatedStorageFile iso)
         {
-            if (!iso.FileExists(RepoTOCFilename))
+            if (!iso.FileExists(RepoFilename))
                 return;
 
-            using (var stream = iso.OpenFile(RepoTOCFilename, FileMode.Open, FileAccess.Read))
+            using (var stream = iso.OpenFile(RepoFilename, FileMode.Open, FileAccess.Read))
             using (var br = new BinaryReader(stream))
             {
                 var fileVer = br.ReadInt32();
