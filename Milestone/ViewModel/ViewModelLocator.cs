@@ -29,15 +29,6 @@ namespace Milestone.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time services and viewmodels
-            ////}
-            ////else
-            ////{
-            ////    // Create run time services and view models
-            ////}
-
             _main = new MainViewModel();
         }
 
