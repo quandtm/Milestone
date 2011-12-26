@@ -50,10 +50,10 @@
 
     <controls:Pivot Title="Milestone" Margin="0,0,0,12" TitleTemplate="{StaticResource PivotTitleTemplate}">
 		<controls:PivotItem Header="mine">
-			<ListBox x:Name="lstUserRepos" ItemsSource="{Binding Model.UserRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}"/>
+			<ListBox x:Name="lstUserRepos" ItemTemplate="{StaticResource RepoListDataTemplate}"/>
 		</controls:PivotItem>
 		<controls:PivotItem Header="watched">
-			<ListBox x:Name="lstWatchedRepos" ItemsSource="{Binding Model.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}"/>
+			<ListBox x:Name="lstWatchedRepos" ItemTemplate="{StaticResource RepoListDataTemplate}"/>
 		</controls:PivotItem>
 	</controls:Pivot>
 

@@ -96,6 +96,7 @@
     <Compile Include="Model\GitHubModel.cs" />
     <Compile Include="Model\RepositoryExtensions.cs" />
     <Compile Include="Model\UserExtensions.cs" />
+    <Compile Include="Model\Context.cs" />
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
