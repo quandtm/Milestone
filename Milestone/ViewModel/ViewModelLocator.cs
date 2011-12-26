@@ -13,6 +13,7 @@
 */
 
 using GalaSoft.MvvmLight;
+using Milestone.Model;
 
 namespace Milestone.ViewModel
 {
@@ -23,6 +24,17 @@ namespace Milestone.ViewModel
     public class ViewModelLocator
     {
         private static MainViewModel _main;
+
+        private static GitHubModel _model;
+        public static GitHubModel Model
+        {
+            get
+            {
+                if (_model == null)
+                    _model = new GitHubModel();
+                return _model;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.

@@ -1,4 +1,5 @@
 using GalaSoft.MvvmLight;
+using Milestone.Model;
 
 namespace Milestone.ViewModel
 {
@@ -16,6 +17,8 @@ namespace Milestone.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        public GitHubModel Model { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -28,6 +31,7 @@ namespace Milestone.ViewModel
             else
             {
                 // Code runs "for real"
+                Model = ViewModelLocator.Model;
             }
         }
     }

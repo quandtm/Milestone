@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Milestone.ViewModel;
 
 namespace Milestone.Views
 {
@@ -14,7 +15,7 @@ namespace Milestone.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (true) // TODO: Replace with check to see if there is a logged in account
+            if (!((MainViewModel)DataContext).Model.IsAuthenticated)
                 NavigationService.Navigate(new Uri("/Views/Login.xaml", UriKind.Relative));
 
             base.OnNavigatedTo(e);

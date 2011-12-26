@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Milestone.ViewModel;
 
 namespace Milestone.Views
 {
@@ -18,6 +10,27 @@ namespace Milestone.Views
         public Login()
         {
             InitializeComponent();
+        }
+
+        private void PerformLogin(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Password))
+            {
+                MessageBox.Show("Please specify a valid Username and Password.", "", MessageBoxButton.OK);
+                return;
+            }
+            ViewModelLocator.Model.Login(txtUsername.Text, txtPassword.Password, new Action<bool>(b =>
+            {
+                if (b)
+                    NavigationService.GoBack();
+            }));
+            btnLogin.IsEnabled = false;
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            btnLogin.IsEnabled = true;
+            base.OnNavigatedTo(e);
         }
     }
 }
