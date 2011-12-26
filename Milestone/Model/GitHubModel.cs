@@ -18,6 +18,7 @@ namespace Milestone.Model
         private const string AuthFilename = "auth.dat";
         private const int AuthFileVersion = 1;
         private const string RepoFilename = "repotoc.dat";
+        private const string IssuesFilename = "{0}_issues.dat";
         private const int RepoFileVersion = 1;
 
         public bool IsAuthenticated { get; private set; }
@@ -57,14 +58,11 @@ namespace Milestone.Model
 
                         _client.Organizations.GetOrganizationsAsync(AuthenticatedUser.Login,
                             new Action<IEnumerable<User>>(
-                                orgs =>
-                                {
-                                    Dispatcher.BeginInvoke(new Action(() =>
-                                        {
-                                            foreach (var org in orgs)
-                                                Contexts.Add(new Context() { User = org });
-                                        }));
-                                }),
+                                orgs => Dispatcher.BeginInvoke(() =>
+                                                                   {
+                                                                       foreach (var org in orgs)
+                                                                           Contexts.Add(new Context() { User = org });
+                                                                   })),
                             new Action<GitHubException>(
                                 ex =>
                                 {
@@ -131,28 +129,36 @@ namespace Milestone.Model
                     });
 
             _client.Users.GetRepositoriesAsync(context.User.Login,
-                    new Action<IEnumerable<Repository>>(
-                        repos =>
-                        {
-                            Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                context.MyRepositories.Clear();
-                                foreach (var repo in repos)
-                                    context.MyRepositories.Add(repo);
-                            }));
-                        }), exceptionAction);
+                    repos => Dispatcher.BeginInvoke(() =>
+                                                        {
+                                                            context.MyRepositories.Clear();
+                                                            foreach (var repo in repos)
+                                                                context.MyRepositories.Add(new Repo(repo));
+                                                        }), exceptionAction);
 
             _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
-                new Action<IEnumerable<Repository>>(
-                    repos =>
+                repos => Dispatcher.BeginInvoke(() =>
+                                                    {
+                                                        context.WatchedRepositories.Clear();
+                                                        foreach (var repo in repos)
+                                                            context.WatchedRepositories.Add(new Repo(repo));
+                                                    }), exceptionAction);
+        }
+        public void LoadIssues(Context context, Repository r)
+        {
+            _client.Issues.GetIssuesAsync(context.User.Login, r.FullName, State.Open,
+                issues =>
+                {
+                    foreach (var i in issues)
                     {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            context.WatchedRepositories.Clear();
-                            foreach (var repo in repos)
-                                context.WatchedRepositories.Add(repo);
-                        }));
-                    }), exceptionAction);
+                        
+                    }
+                },
+
+                ex =>
+                {
+
+                });
         }
 
         public void Save()
@@ -164,7 +170,13 @@ namespace Milestone.Model
             {
                 SaveAuth(iso);
                 SaveRepos(iso);
+                SaveIssues(iso);
             }
+        }
+
+        private void SaveIssues(IsolatedStorageFile iso)
+        {
+
         }
 
         private void SaveRepos(IsolatedStorageFile iso)
@@ -180,11 +192,11 @@ namespace Milestone.Model
                     bw.Write(context.User.Login);
                     bw.Write(context.MyRepositories.Count);
                     for (int i = 0; i < context.MyRepositories.Count; i++)
-                        context.MyRepositories[i].Save(bw);
+                        context.MyRepositories[i].Repository.Save(bw);
 
                     bw.Write(context.WatchedRepositories.Count);
                     for (int i = 0; i < context.WatchedRepositories.Count; i++)
-                        context.WatchedRepositories[i].Save(bw);
+                        context.WatchedRepositories[i].Repository.Save(bw);
                 }
 
                 bw.Close();
@@ -240,7 +252,7 @@ namespace Milestone.Model
                             {
                                 var repo = new Repository();
                                 repo.Load(br, fileVer);
-                                context.MyRepositories.Add(repo);
+                                context.MyRepositories.Add(new Repo(repo));
                             }
 
                             var numWatchedRepos = br.ReadInt32();
@@ -249,7 +261,7 @@ namespace Milestone.Model
                             {
                                 var repo = new Repository();
                                 repo.Load(br, fileVer);
-                                context.WatchedRepositories.Add(repo);
+                                context.WatchedRepositories.Add(new Repo(repo));
                             }
                             break;
                         }

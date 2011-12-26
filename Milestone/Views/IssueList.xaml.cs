@@ -1,9 +1,9 @@
 ﻿using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
+using Milestone.ViewModel;
 
 namespace Milestone.Views
 {
-    public partial class IssueList : PhoneApplicationPage
+    public partial class IssueList
     {
         public IssueList()
         {
@@ -15,6 +15,12 @@ namespace Milestone.Views
             var contextIndex = int.Parse(NavigationContext.QueryString["context"]);
             var repoName = NavigationContext.QueryString["repo"];
 
+            var vm = (DataContext as IssuesViewModel);
+            if (vm != null)
+            {
+                vm.ContextIndex = contextIndex;
+                vm.RepoName = repoName;
+            }
             base.OnNavigatedTo(e);
         }
     }

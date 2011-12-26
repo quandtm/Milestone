@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
 using Milestone.ViewModel;
 using NGitHub.Models;
 
 namespace Milestone.Views
 {
-    public partial class MainPage : PhoneApplicationPage
+    public partial class MainPage
     {
         private MainViewModel _vm;
         private bool _ignoreRepoSelection = false;

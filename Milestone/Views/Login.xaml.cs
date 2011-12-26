@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Windows;
-using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using Milestone.ViewModel;
 
 namespace Milestone.Views
 {
-    public partial class Login : PhoneApplicationPage
+    public partial class Login
     {
         public Login()
         {
             InitializeComponent();
         }
 
-        private void PerformLogin(object sender, RoutedEventArgs e)
+        private void PerformLogin(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Password))
             {
                 MessageBox.Show("Please specify a valid Username and Password.", "", MessageBoxButton.OK);
                 return;
             }
-            ViewModelLocator.Model.Login(txtUsername.Text, txtPassword.Password, new Action<bool>(b =>
+
+            ViewModelLocator.Model.Login(txtUsername.Text, txtPassword.Password, (b =>
             {
-                Dispatcher.BeginInvoke(new Action(() =>
+                Dispatcher.BeginInvoke((() =>
                     {
                         if (b)
                         {
@@ -30,17 +31,19 @@ namespace Milestone.Views
                         else
                         {
                             MessageBox.Show("Login failed, please check your Username and Password and try again.", "", MessageBoxButton.OK);
-                            btnLogin.IsEnabled = true;
+                            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true; //Not accessible through name. 
+                            shellProgress.IsVisible = false;
                         }
                     }));
             }));
-            btnLogin.IsEnabled = false;
+            shellProgress.IsVisible = true;
+            ((ApplicationBarIconButton) ApplicationBar.Buttons[0]).IsEnabled = false; //Not accessible through name. 
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             NavigationService.RemoveBackEntry();
-            btnLogin.IsEnabled = true;
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true; //Not accessible through name. 
             base.OnNavigatedTo(e);
         }
     }

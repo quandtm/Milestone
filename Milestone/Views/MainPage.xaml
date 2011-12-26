@@ -14,8 +14,8 @@
     >
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="RepoListDataTemplate">
-            <Grid Margin="12,0,0,12" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
-                <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top"/>
+            <Grid Margin="0,0,0,12" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
+                <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
@@ -68,10 +68,10 @@
 
         <controls:Pivot x:Name="pivot" Title="{Binding SelectedContext.User.Name}" Grid.Row="1" Margin="0,0,0,12" Canvas.ZIndex="1" Visibility="{Binding HasSelectedContext, Converter={StaticResource BoolToVisConv}, Mode=OneWay}">
             <controls:PivotItem Header="mine">
-                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding SelectedContext.MyRepositories}" SelectionChanged="SelectRepo"/>
+                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding SelectedContext.MyRepositories}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
             </controls:PivotItem>
             <controls:PivotItem Header="watched">
-                <ListBox x:Name="lstWatched" ItemsSource="{Binding SelectedContext.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}" SelectionChanged="SelectRepo"/>
+                <ListBox x:Name="lstWatched" ItemsSource="{Binding SelectedContext.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
             </controls:PivotItem>
         </controls:Pivot>
 

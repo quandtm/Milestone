@@ -75,5 +75,12 @@ namespace Milestone.ViewModel
                 return _main;
             }
         }
+
+        private IssuesViewModel _issues;
+        public IssuesViewModel Issues
+        {
+            get { return _issues ?? new IssuesViewModel(Dispatcher, Model); }
+            set { _issues = value; }
+        }
     }
 }
