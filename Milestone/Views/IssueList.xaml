@@ -1,26 +1,50 @@
-﻿<phone:PhoneApplicationPage 
-    x:Class="Milestone.Views.IssueList"
+﻿<phone:PhoneApplicationPage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:Converters="clr-namespace:Milestone.Converters" x:Class="Milestone.Views.IssueList"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=Issues}">
+    DataContext="{Binding Issues, Source={StaticResource Locator}}">
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock x:Name="ApplicationTitle" Text="{Binding RepoName}" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,15,24,0" d:LayoutOverrides="Height"/>
-    	<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,12,12,0"/>
-    </Grid>
- 
+    <phone:PhoneApplicationPage.Resources>
+        <Converters:DateToRelativeConverter x:Key="DateToRelativeConverter" />
+
+    </phone:PhoneApplicationPage.Resources>
+    <controls:Pivot Grid.Row="1" Title="{Binding RepoName}">
+        <controls:PivotItem Header="open">
+            <ListBox ItemsSource="{Binding Repo.Issues}" Margin="12,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,24">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Title}" FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+                            <TextBlock>
+                                <Run Foreground="#7FFFFFFF" Text="by "/>
+                                <Run Text="{Binding User}" />
+                                <Run  Foreground="#7FFFFFFF" Text="{Binding CreatedAt, Converter={StaticResource DateToRelativeConverter}}" />
+                            </TextBlock>
+                            <ListBox ItemsSource="{Binding Labels}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </controls:PivotItem>
+        <controls:PivotItem Header="closed">
+            <Grid/>
+        </controls:PivotItem>
+    </controls:Pivot>
 </phone:PhoneApplicationPage>

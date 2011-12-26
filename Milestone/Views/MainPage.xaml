@@ -8,13 +8,13 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     x:Class="Milestone.Views.MainPage"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     >
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="RepoListDataTemplate">
-            <Grid Margin="0,0,0,12" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
+            <Grid Margin="0,0,0,12" DataContext="{Binding Repository}" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>

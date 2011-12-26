@@ -23,16 +23,20 @@ namespace Milestone.Model
 
         public bool IsAuthenticated { get; private set; }
 
-        private GitHubClient _client;
+        private readonly GitHubClient _client;
         public User AuthenticatedUser { get; private set; }
         public ObservableCollection<Context> Contexts { get; private set; }
 
         public Dispatcher Dispatcher { get; set; }
 
         private string _username, _password;
+        private Action<GitHubException> _exceptionAction;
+
 
         public GitHubModel()
         {
+            _exceptionAction = ex => Dispatcher.BeginInvoke(() => MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK));
+
             _client = new GitHubClient();
 
             Contexts = new ObservableCollection<Context>();
@@ -63,11 +67,7 @@ namespace Milestone.Model
                                                                        foreach (var org in orgs)
                                                                            Contexts.Add(new Context() { User = org });
                                                                    })),
-                            new Action<GitHubException>(
-                                ex =>
-                                {
-                                    MessageBox.Show("Error: " + ex.Message);
-                                }));
+                            _exceptionAction);
 
                         if (onComplete != null)
                             onComplete(IsAuthenticated);
@@ -106,12 +106,6 @@ namespace Milestone.Model
             if (!IsAuthenticated || Dispatcher == null)
                 return;
 
-            var exceptionAction = new Action<GitHubException>(
-                    ex =>
-                    {
-                        MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK);
-                    });
-
             foreach (var context in Contexts)
                 RefreshContextRepos(context);
         }
@@ -121,20 +115,13 @@ namespace Milestone.Model
             // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
                 return;
-
-            var exceptionAction = new Action<GitHubException>(
-                    ex =>
-                    {
-                        MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK);
-                    });
-
             _client.Users.GetRepositoriesAsync(context.User.Login,
                     repos => Dispatcher.BeginInvoke(() =>
                                                         {
                                                             context.MyRepositories.Clear();
                                                             foreach (var repo in repos)
                                                                 context.MyRepositories.Add(new Repo(repo));
-                                                        }), exceptionAction);
+                                                        }), _exceptionAction);
 
             _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
                 repos => Dispatcher.BeginInvoke(() =>
@@ -142,23 +129,20 @@ namespace Milestone.Model
                                                         context.WatchedRepositories.Clear();
                                                         foreach (var repo in repos)
                                                             context.WatchedRepositories.Add(new Repo(repo));
-                                                    }), exceptionAction);
+                                                    }), _exceptionAction);
         }
-        public void LoadIssues(Context context, Repository r)
+        public void LoadIssues(Context context, Repo r)
         {
-            _client.Issues.GetIssuesAsync(context.User.Login, r.FullName, State.Open,
-                issues =>
-                {
-                    foreach (var i in issues)
-                    {
-                        
-                    }
-                },
+            _client.Issues.GetIssuesAsync(context.User.Login, r.Repository.Name, State.Open,
+                issues => Dispatcher.BeginInvoke(() =>
+                                                     {
+                                                         foreach (var i in issues)
+                                                         {
+                                                             r.Issues.Add(i);
+                                                         }
+                                                     }),
 
-                ex =>
-                {
-
-                });
+                _exceptionAction);
         }
 
         public void Save()

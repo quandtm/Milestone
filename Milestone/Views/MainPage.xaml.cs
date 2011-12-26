@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Milestone.Model;
 using Milestone.ViewModel;
 using NGitHub.Models;
 
@@ -58,7 +59,7 @@ namespace Milestone.Views
             if (listbox == null || listbox.SelectedItem == null)
                 return;
 
-            var repo = listbox.SelectedItem as Repository;
+            var repo = listbox.SelectedItem as Repo;
             if (repo == null)
                 return;
 
@@ -67,7 +68,7 @@ namespace Milestone.Views
             listbox.SelectedIndex = -1;
             _ignoreRepoSelection = false;
 
-            NavigationService.Navigate(new Uri("/Views/IssueList.xaml?context=" + _contextIndex + "&repo=" + repo.Name.Replace(" ", "%20"), UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/IssueList.xaml?context=" + _contextIndex + "&repo=" + repo.Repository.Name.Replace(" ", "%20"), UriKind.Relative));
         }
     }
 }
