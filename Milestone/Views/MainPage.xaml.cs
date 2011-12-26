@@ -25,6 +25,7 @@ namespace Milestone.Views
             {
                 if (NavigationContext.QueryString.ContainsKey("from") && NavigationContext.QueryString["from"].Equals("login"))
                     NavigationService.RemoveBackEntry();
+
                 _vm.RefreshAll();
             }
 

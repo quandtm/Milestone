@@ -22,15 +22,14 @@ namespace Milestone.Model
         public User AuthenticatedUser { get; private set; }
         public ObservableCollection<Repository> Repos { get; private set; }
 
-        private Dispatcher _dispatcher;
+        public Dispatcher Dispatcher { get; set; }
 
         private string _username, _password;
 
-        public GitHubModel(Dispatcher dispatcher)
+        public GitHubModel()
         {
             _client = new GitHubClient();
             Repos = new ObservableCollection<Repository>();
-            _dispatcher = dispatcher;
         }
 
         public void Login(string username, string password, Action<bool> onComplete)
@@ -74,19 +73,19 @@ namespace Milestone.Model
         public void RefreshRepos()
         {
             // TODO: Global progress bar
-            if (!IsAuthenticated)
+            if (!IsAuthenticated || Dispatcher == null)
                 return;
 
             _client.Users.GetRepositoriesAsync(AuthenticatedUser.Login,
                 new Action<IEnumerable<Repository>>(
                     repos =>
                     {
-                        //_dispatcher.BeginInvoke(new Action(() =>
-                        //        {
-                        //            Repos.Clear();
-                        //            foreach (var repo in repos)
-                        //                Repos.Add(repo);
-                        //        }));
+                        Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    Repos.Clear();
+                                    foreach (var repo in repos)
+                                        Repos.Add(repo);
+                                }));
                     }),
                 new Action<GitHubException>(
                     ex =>
