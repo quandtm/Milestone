@@ -12,7 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
-using GalaSoft.MvvmLight;
+using System.Windows.Threading;
 using Milestone.Model;
 
 namespace Milestone.ViewModel
@@ -23,6 +23,8 @@ namespace Milestone.ViewModel
     /// </summary>
     public class ViewModelLocator
     {
+        public static Dispatcher Dispatcher { get; set; }
+
         private static MainViewModel _main;
 
         private static GitHubModel _model;
@@ -32,7 +34,7 @@ namespace Milestone.ViewModel
             {
                 if (_model == null)
                 {
-                    _model = new GitHubModel();
+                    _model = new GitHubModel(Dispatcher);
                     _model.Load();
                 }
                 return _model;

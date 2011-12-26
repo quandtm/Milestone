@@ -24,7 +24,9 @@ namespace Milestone.Views
                 Dispatcher.BeginInvoke(new Action(() =>
                     {
                         if (b)
-                            NavigationService.GoBack();
+                        {
+                            NavigationService.Navigate(new Uri("/Views/MainPage.xaml?from=login", UriKind.Relative));
+                        }
                         else
                         {
                             MessageBox.Show("Login failed, please check your Username and Password and try again.", "", MessageBoxButton.OK);
@@ -37,6 +39,7 @@ namespace Milestone.Views
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            NavigationService.RemoveBackEntry();
             btnLogin.IsEnabled = true;
             base.OnNavigatedTo(e);
         }

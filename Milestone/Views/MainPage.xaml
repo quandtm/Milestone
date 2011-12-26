@@ -27,7 +27,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <ListBox x:Name="lstRepos" Margin="0,0,0,12" Grid.Row="1"/>
+        <ListBox x:Name="lstRepos" Margin="0,0,0,12" Grid.Row="1" ItemsSource="{Binding Model.Repos}"/>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
