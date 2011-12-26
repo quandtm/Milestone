@@ -31,5 +31,11 @@ namespace Milestone.Views
 
             base.OnNavigatedTo(e);
         }
+
+        private void Logout(object sender, EventArgs e)
+        {
+            _vm.Logout();
+            NavigationService.Navigate(new Uri("/Views/Login.xaml", UriKind.Relative));
+        }
     }
 }

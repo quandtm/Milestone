@@ -30,5 +30,13 @@ namespace Milestone.ViewModel
 
             Model.RefreshRepos();
         }
+
+        public void Logout()
+        {
+            if (Model == null)
+                return;
+
+            Model.Logout();
+        }
     }
 }
