@@ -6,48 +6,76 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     x:Class="Milestone.Views.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     >
-	<phone:PhoneApplicationPage.Resources>
-		<DataTemplate x:Key="RepoListDataTemplate">
-			<Grid Margin="12,0,0,12" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
-				<TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top"/>
-			</Grid>
-		</DataTemplate>
-		<DataTemplate x:Key="PivotTitleTemplate">
-			<Grid>
-				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextTitle2Style}" Text="{Binding}"/>
-			</Grid>
-		</DataTemplate>
-	</phone:PhoneApplicationPage.Resources>
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Key="RepoListDataTemplate">
+            <Grid Margin="12,0,0,12" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
+                <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
 
-	<phone:PhoneApplicationPage.FontFamily>
-		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
-	</phone:PhoneApplicationPage.FontFamily>
-	<phone:PhoneApplicationPage.FontSize>
-		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
-	</phone:PhoneApplicationPage.FontSize>
-	<phone:PhoneApplicationPage.Foreground>
-		<StaticResource ResourceKey="PhoneForegroundBrush"/>
-	</phone:PhoneApplicationPage.Foreground>
-	<phone:PhoneApplicationPage.DataContext>
-		<Binding Path="Main" Source="{StaticResource Locator}"/>
-	</phone:PhoneApplicationPage.DataContext>
-    
+    <phone:PhoneApplicationPage.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </phone:PhoneApplicationPage.FontFamily>
+    <phone:PhoneApplicationPage.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </phone:PhoneApplicationPage.FontSize>
+    <phone:PhoneApplicationPage.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </phone:PhoneApplicationPage.Foreground>
+    <phone:PhoneApplicationPage.DataContext>
+        <Binding Path="Main" Source="{StaticResource Locator}"/>
+    </phone:PhoneApplicationPage.DataContext>
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar x:Name="appBar" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="btnLogout" Text="logout" IsEnabled="True" Click="Logout"/>
-            	<shell:ApplicationBarMenuItem x:Name="btnSettings" IsEnabled="True" Text="settings"/>
-            	<shell:ApplicationBarMenuItem x:Name="btnAbout" IsEnabled="True" Text="about"/>
+                <shell:ApplicationBarMenuItem x:Name="btnSettings" IsEnabled="True" Text="settings"/>
+                <shell:ApplicationBarMenuItem x:Name="btnAbout" IsEnabled="True" Text="about"/>
             </shell:ApplicationBar.MenuItems>
             <shell:ApplicationBarIconButton x:Name="btnRefresh" IconUri="/icons/appbar.refresh.rest.png" Text="refresh"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
-    <controls:Pivot x:Name="pivot" Title="Milestone" Margin="0,0,0,12" TitleTemplate="{StaticResource PivotTitleTemplate}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.116*"/>
+            <RowDefinition Height="0.884*"/>
+        </Grid.RowDefinitions>
+
+        <toolkit:ListPicker x:Name="contextSelector" d:LayoutOverrides="Height" Margin="12,0" SelectionChanged="SelectContext" ExpansionMode="FullScreenOnly" ItemsSource="{Binding}" DataContext="{Binding Model.Contexts}">
+        	<toolkit:ListPicker.Resources>
+        		<DataTemplate x:Key="ListPickerTemplate">
+        			<TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" />
+        		</DataTemplate>
+        		<DataTemplate x:Key="ListPickerItemTemplate">
+        			<TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" Foreground="{StaticResource PhoneTextBoxForegroundBrush}" />
+        		</DataTemplate>
+        	</toolkit:ListPicker.Resources>
+        	<toolkit:ListPicker.ItemTemplate>
+        		<StaticResource ResourceKey="ListPickerItemTemplate"/>
+        	</toolkit:ListPicker.ItemTemplate>
+        	<toolkit:ListPicker.FullModeItemTemplate>
+        		<StaticResource ResourceKey="ListPickerTemplate"/>
+        	</toolkit:ListPicker.FullModeItemTemplate>
+        </toolkit:ListPicker>
+
+        <controls:Pivot x:Name="pivot" Title="{Binding SelectedContext.User.Name}" Grid.Row="1" Margin="0,0,0,12" Canvas.ZIndex="1" Visibility="{Binding HasSelectedContext, Converter={StaticResource BoolToVisConv}, Mode=OneWay}">
+            <controls:PivotItem Header="mine">
+                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding SelectedContext.MyRepositories}"/>
+            </controls:PivotItem>
+            <controls:PivotItem Header="watched">
+                <ListBox x:Name="lstWatched" ItemsSource="{Binding SelectedContext.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}"/>
+            </controls:PivotItem>
+        </controls:Pivot>
+
+    </Grid>
 
 </phone:PhoneApplicationPage>

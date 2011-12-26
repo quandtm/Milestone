@@ -1,24 +1,23 @@
 using GalaSoft.MvvmLight;
 using Milestone.Model;
-using System;
 
 namespace Milestone.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         public GitHubModel Model { get; set; }
+        public Context SelectedContext { get; set; }
+        public bool HasSelectedContext { get { return SelectedContext != null; } }
 
         public MainViewModel()
         {
             Model = ViewModelLocator.Model;
         }
 
-        public void RefreshRepositories(Action<Context> contextComplete)
+        public void Refresh()
         {
-            if (Model == null)
-                return;
-
-            Model.RefreshRepos(contextComplete);
+            if (SelectedContext != null && Model != null)
+                Model.RefreshContextRepos(SelectedContext);
         }
 
         public void Logout()

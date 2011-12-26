@@ -102,7 +102,7 @@ namespace Milestone.Model
             }
         }
 
-        public void RefreshRepos(Action<Context> contextComplete)
+        public void RefreshAllRepos()
         {
             // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
@@ -115,34 +115,44 @@ namespace Milestone.Model
                     });
 
             foreach (var context in Contexts)
-            {
-                _client.Users.GetRepositoriesAsync(context.User.Login,
-                    new Action<IEnumerable<Repository>>(
-                        repos =>
-                        {
-                            Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        context.MyRepositories.Clear();
-                                        foreach (var repo in repos)
-                                            context.MyRepositories.Add(repo);
+                RefreshContextRepos(context);
+        }
 
-                                        if (contextComplete != null)
-                                            contextComplete(context);
-                                    }));
-                        }), exceptionAction);
+        public void RefreshContextRepos(Context context)
+        {
+            // TODO: Global progress bar
+            if (!IsAuthenticated || Dispatcher == null)
+                return;
 
-                _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
+            var exceptionAction = new Action<GitHubException>(
+                    ex =>
+                    {
+                        MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK);
+                    });
+
+            _client.Users.GetRepositoriesAsync(context.User.Login,
                     new Action<IEnumerable<Repository>>(
                         repos =>
                         {
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
-                                context.WatchedRepositories.Clear();
+                                context.MyRepositories.Clear();
                                 foreach (var repo in repos)
-                                    context.WatchedRepositories.Add(repo);
+                                    context.MyRepositories.Add(repo);
                             }));
                         }), exceptionAction);
-            }
+
+            _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
+                new Action<IEnumerable<Repository>>(
+                    repos =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            context.WatchedRepositories.Clear();
+                            foreach (var repo in repos)
+                                context.WatchedRepositories.Add(repo);
+                        }));
+                    }), exceptionAction);
         }
 
         public void Save()
