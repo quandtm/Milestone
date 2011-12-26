@@ -23,6 +23,11 @@ namespace Milestone.Views
             {
                 if (b)
                     NavigationService.GoBack();
+                else
+                {
+                    MessageBox.Show("Login failed, please check your Username and Password and try again.", "", MessageBoxButton.OK);
+                    btnLogin.IsEnabled = true;
+                }
             }));
             btnLogin.IsEnabled = false;
         }
