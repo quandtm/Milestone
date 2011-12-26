@@ -37,7 +37,6 @@
         <shell:ApplicationBar x:Name="appBar" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="btnLogout" Text="logout" IsEnabled="True" Click="Logout"/>
-                <shell:ApplicationBarMenuItem x:Name="btnSettings" IsEnabled="True" Text="settings"/>
                 <shell:ApplicationBarMenuItem x:Name="btnAbout" IsEnabled="True" Text="about"/>
             </shell:ApplicationBar.MenuItems>
             <shell:ApplicationBarIconButton x:Name="btnRefresh" IconUri="/icons/appbar.refresh.rest.png" Text="refresh"/>
@@ -69,10 +68,10 @@
 
         <controls:Pivot x:Name="pivot" Title="{Binding SelectedContext.User.Name}" Grid.Row="1" Margin="0,0,0,12" Canvas.ZIndex="1" Visibility="{Binding HasSelectedContext, Converter={StaticResource BoolToVisConv}, Mode=OneWay}">
             <controls:PivotItem Header="mine">
-                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding SelectedContext.MyRepositories}"/>
+                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding SelectedContext.MyRepositories}" SelectionChanged="SelectRepo"/>
             </controls:PivotItem>
             <controls:PivotItem Header="watched">
-                <ListBox x:Name="lstWatched" ItemsSource="{Binding SelectedContext.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}"/>
+                <ListBox x:Name="lstWatched" ItemsSource="{Binding SelectedContext.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}" SelectionChanged="SelectRepo"/>
             </controls:PivotItem>
         </controls:Pivot>
 

@@ -97,6 +97,9 @@
     <Compile Include="Model\RepositoryExtensions.cs" />
     <Compile Include="Model\UserExtensions.cs" />
     <Compile Include="Model\Context.cs" />
+    <Compile Include="Views\IssueList.xaml.cs">
+      <DependentUpon>IssueList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Views\IssueList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
