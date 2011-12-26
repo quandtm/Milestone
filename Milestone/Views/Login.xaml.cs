@@ -21,13 +21,16 @@ namespace Milestone.Views
             }
             ViewModelLocator.Model.Login(txtUsername.Text, txtPassword.Password, new Action<bool>(b =>
             {
-                if (b)
-                    NavigationService.GoBack();
-                else
-                {
-                    MessageBox.Show("Login failed, please check your Username and Password and try again.", "", MessageBoxButton.OK);
-                    btnLogin.IsEnabled = true;
-                }
+                Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        if (b)
+                            NavigationService.GoBack();
+                        else
+                        {
+                            MessageBox.Show("Login failed, please check your Username and Password and try again.", "", MessageBoxButton.OK);
+                            btnLogin.IsEnabled = true;
+                        }
+                    }));
             }));
             btnLogin.IsEnabled = false;
         }

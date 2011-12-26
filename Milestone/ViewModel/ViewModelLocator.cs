@@ -31,7 +31,10 @@ namespace Milestone.ViewModel
             get
             {
                 if (_model == null)
+                {
                     _model = new GitHubModel();
+                    _model.Load();
+                }
                 return _model;
             }
         }
