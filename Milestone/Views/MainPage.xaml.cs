@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Milestone.Model;
 using Milestone.ViewModel;
 
 namespace Milestone.Views
@@ -26,10 +27,19 @@ namespace Milestone.Views
                 if (NavigationContext.QueryString.ContainsKey("from") && NavigationContext.QueryString["from"].Equals("login"))
                     NavigationService.RemoveBackEntry();
 
-                _vm.RefreshAll();
+                _vm.RefreshRepositories(new Action<Context>(
+                    c =>
+                    {
+                        CreatePivotItemsForContext(c);
+                    }));
             }
 
             base.OnNavigatedTo(e);
+        }
+
+        private void CreatePivotItemsForContext(Context c)
+        {
+
         }
 
         private void Logout(object sender, EventArgs e)

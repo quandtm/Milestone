@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using Milestone.Model;
+using System;
 
 namespace Milestone.ViewModel
 {
@@ -12,20 +13,12 @@ namespace Milestone.ViewModel
             Model = ViewModelLocator.Model;
         }
 
-        public void RefreshAll()
+        public void RefreshRepositories(Action<Context> contextComplete)
         {
             if (Model == null)
                 return;
 
-            RefreshRepositories();
-        }
-
-        public void RefreshRepositories()
-        {
-            if (Model == null)
-                return;
-
-            Model.RefreshRepos();
+            Model.RefreshRepos(contextComplete);
         }
 
         public void Logout()

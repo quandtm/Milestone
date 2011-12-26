@@ -102,7 +102,7 @@ namespace Milestone.Model
             }
         }
 
-        public void RefreshRepos()
+        public void RefreshRepos(Action<Context> contextComplete)
         {
             // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
@@ -125,6 +125,9 @@ namespace Milestone.Model
                                         context.MyRepositories.Clear();
                                         foreach (var repo in repos)
                                             context.MyRepositories.Add(repo);
+
+                                        if (contextComplete != null)
+                                            contextComplete(context);
                                     }));
                         }), exceptionAction);
 
