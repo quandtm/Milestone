@@ -6,17 +6,25 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    xmlns:Converters="clr-namespace:Milestone.Converters" FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding IssueDetails, Source={StaticResource Locator}}">
-	<StackPanel Margin="12" DataContext="{Binding Issue}">
-		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Title}" VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeLarge}"/>
-		<TextBlock TextWrapping="Wrap" Text="{Binding Body}" />
-	</StackPanel>
+    <phone:PhoneApplicationPage.Resources>
+        <Converters:GravatarIdToUriConverter x:Key="GravatarIdToUriConverter" />
+    </phone:PhoneApplicationPage.Resources>
+	<Grid Margin="12">
+		<StackPanel DataContext="{Binding Issue}" VerticalAlignment="Top" Margin="74,0,0,0">
+			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Title}" VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+			<TextBlock TextWrapping="Wrap" Text="{Binding Body}" />
+		</StackPanel>
+        <Image HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="64" Source="{Binding Issue.GravatarId, Converter={StaticResource GravatarIdToUriConverter}, ConverterParameter=64}"/>
+
+
+	</Grid>
 
 
 </phone:PhoneApplicationPage>
