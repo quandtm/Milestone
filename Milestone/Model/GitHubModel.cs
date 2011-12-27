@@ -12,6 +12,7 @@ using NGitHub;
 using NGitHub.Models;
 using NGitHub.Web;
 using RestSharp;
+using System.Security.Cryptography;
 
 namespace Milestone.Model
 {
@@ -228,8 +229,14 @@ namespace Milestone.Model
             using (var bw = new BinaryWriter(stream))
             {
                 bw.Write(AuthFileVersion);
-                bw.Write(_username);
-                bw.Write(_password);
+                byte[] unamePlainData = System.Text.Encoding.UTF8.GetBytes(_username);
+                byte[] pwordPlainData = System.Text.Encoding.UTF8.GetBytes(_password);
+                byte[] unameEncrypted = ProtectedData.Protect(unamePlainData, null);
+                byte[] pwordEncrypted = ProtectedData.Protect(pwordPlainData, null);
+                bw.Write(unameEncrypted.Length);
+                bw.Write(unameEncrypted, 0, unameEncrypted.Length);
+                bw.Write(pwordEncrypted.Length);
+                bw.Write(pwordEncrypted, 0, pwordEncrypted.Length);
 
                 bw.Write(Contexts.Count);
                 for (int i = 0; i < Contexts.Count; i++)
@@ -308,8 +315,14 @@ namespace Milestone.Model
                 using (var br = new BinaryReader(stream))
                 {
                     var fileVer = br.ReadInt32();
-                    _username = br.ReadString();
-                    _password = br.ReadString();
+                    var unameLen = br.ReadInt32();
+                    var unameEncrypted = br.ReadBytes(unameLen);
+                    var pwordLen = br.ReadInt32();
+                    var pwordEncrypted = br.ReadBytes(pwordLen);
+                    var unamePlain = ProtectedData.Unprotect(unameEncrypted, null);
+                    var pwordPlain = ProtectedData.Unprotect(pwordEncrypted, null);
+                    _username = System.Text.Encoding.UTF8.GetString(unamePlain, 0, unamePlain.Length);
+                    _password = System.Text.Encoding.UTF8.GetString(pwordPlain, 0, pwordPlain.Length);
                     IsAuthenticated = true;
 
                     var numContexts = br.ReadInt32();
