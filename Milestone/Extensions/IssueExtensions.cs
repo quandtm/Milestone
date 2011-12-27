@@ -20,6 +20,7 @@ namespace Milestone.Extensions
                 for (int i = 0; i < issue.Labels.Count; i++)
                     writer.Write(issue.Labels[i].Name);
             }
+            writer.Write(issue.GravatarId);
         }
 
         public static void Load(this Issue issue, BinaryReader reader, int fileVersion)
@@ -41,6 +42,7 @@ namespace Milestone.Extensions
                     issue.Labels.Add(label);
                 }
             }
+            issue.GravatarId = reader.ReadString();
         }
     }
 }

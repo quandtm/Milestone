@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Threading;
 using Milestone.Extensions;
@@ -12,7 +13,6 @@ using NGitHub;
 using NGitHub.Models;
 using NGitHub.Web;
 using RestSharp;
-using System.Security.Cryptography;
 
 namespace Milestone.Model
 {
@@ -22,8 +22,6 @@ namespace Milestone.Model
         private const int AuthFileVersion = 1;
         private const string RepoFilename = "repotoc.dat";
         private const int RepoFileVersion = 1;
-        private const string IssuesFilename = "{0}_issues.dat";
-        private const int IssuesFileVersion = 1;
 
         public bool IsAuthenticated { get; private set; }
 
@@ -187,16 +185,7 @@ namespace Milestone.Model
             {
                 SaveAuth(iso);
                 SaveRepos(iso);
-                SaveIssues(iso);
             }
-        }
-
-        private void SaveIssues(IsolatedStorageFile iso)
-        {
-        }
-
-        private void SaveRepoIssues(IsolatedStorageFile iso, Repo repo)
-        {
         }
 
         private void SaveRepos(IsolatedStorageFile iso)
@@ -212,11 +201,11 @@ namespace Milestone.Model
                     bw.Write(context.User.Login);
                     bw.Write(context.MyRepositories.Count);
                     for (int i = 0; i < context.MyRepositories.Count; i++)
-                        context.MyRepositories[i].Repository.Save(bw);
+                        context.MyRepositories[i].Save(bw);
 
                     bw.Write(context.WatchedRepositories.Count);
                     for (int i = 0; i < context.WatchedRepositories.Count; i++)
-                        context.WatchedRepositories[i].Repository.Save(bw);
+                        context.WatchedRepositories[i].Save(bw);
                 }
 
                 bw.Close();
@@ -252,16 +241,7 @@ namespace Milestone.Model
             {
                 LoadAuth(iso);
                 LoadRepos(iso);
-                LoadIssues(iso);
             }
-        }
-
-        private void LoadIssues(IsolatedStorageFile iso)
-        {
-        }
-
-        private void LoadRepoIssues(IsolatedStorageFile iso, Repo repo)
-        {
         }
 
         private void LoadRepos(IsolatedStorageFile iso)
@@ -285,18 +265,18 @@ namespace Milestone.Model
                             context.MyRepositories.Clear();
                             for (int j = 0; j < numMyRepos; j++)
                             {
-                                var repo = new Repository();
+                                var repo = new Repo();
                                 repo.Load(br, fileVer);
-                                context.MyRepositories.Add(new Repo(repo));
+                                context.MyRepositories.Add(repo);
                             }
 
                             var numWatchedRepos = br.ReadInt32();
                             context.WatchedRepositories.Clear();
                             for (int j = 0; j < numWatchedRepos; j++)
                             {
-                                var repo = new Repository();
+                                var repo = new Repo();
                                 repo.Load(br, fileVer);
-                                context.WatchedRepositories.Add(new Repo(repo));
+                                context.WatchedRepositories.Add(repo);
                             }
                             break;
                         }
