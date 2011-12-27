@@ -28,7 +28,7 @@
         	<TextBlock TextWrapping="Wrap" Margin="12,0"><Run Text="Milestone is free, open source software "/><Run Text="that relies on GitHub, "/><Run Text="MvvmLight, WP7 Toolkit, Coding4Fun Toolkit, JSON.NET, RestSharp and NGitHub"/></TextBlock>
         	<TextBlock TextWrapping="Wrap" Margin="12,24"><Run Text="Source can be downloaded at "/><LineBreak/>
         		<Run Text="https://github.com/quandtm/Milestone" Foreground="{StaticResource PhoneAccentBrush}" TextDecorations="Underline"/></TextBlock>
-        	<Button x:Name="btnFeedback" Content="Feedback"/>
+            <Button x:Name="btnFeedback" Content="Feedback" Click="OpenFeedback"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
