@@ -22,7 +22,7 @@
     </phone:PhoneApplicationPage.Resources>
     <controls:Pivot Grid.Row="1" Title="{Binding RepoName}">
         <controls:PivotItem Header="open">
-            <ListBox x:Name="lstOpen" ItemsSource="{Binding Source={StaticResource cvsOpen}}" Margin="12,0" SelectionChanged="OpenIssue">
+            <ListBox x:Name="lstOpen" Margin="12,0" SelectionChanged="OpenIssue">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,0,0,24">
@@ -45,7 +45,7 @@
             </ListBox>
         </controls:PivotItem>
         <controls:PivotItem Header="closed">
-            <ListBox x:Name="lstClosed" ItemsSource="{Binding Source={StaticResource cvsClosed}}" Margin="12,0" SelectionChanged="OpenIssue">
+            <ListBox x:Name="lstClosed" Margin="12,0" SelectionChanged="OpenIssue">
         		<ListBox.ItemTemplate>
         			<DataTemplate>
         				<StackPanel Margin="0,0,0,24">

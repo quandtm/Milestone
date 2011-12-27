@@ -27,9 +27,16 @@ namespace Milestone.Extensions
             var numIssues = reader.ReadInt32();
             for (int i = 0; i < numIssues; i++)
             {
-                var issue = new Issue();
-                issue.Load(reader, fileVersion);
-                repo.Issues.Add(issue);
+                try
+                {
+                    var issue = new Issue();
+                    issue.Load(reader, fileVersion);
+                    repo.Issues.Add(issue);
+                }
+                catch (EndOfStreamException ex)
+                {
+                    
+                }
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Milestone.Extensions
         {
             writer.Write(issue.Title);
             writer.Write(issue.Body);
-            writer.Write(issue.User);
+            writer.Write(issue.User ?? "");
             writer.Write(issue.Number);
             writer.Write(issue.CreatedAt.ToString());
             writer.Write(issue.Labels != null);
@@ -20,7 +20,7 @@ namespace Milestone.Extensions
                 for (int i = 0; i < issue.Labels.Count; i++)
                     writer.Write(issue.Labels[i].Name);
             }
-            writer.Write(issue.GravatarId);
+            writer.Write(issue.GravatarId ?? "");
             writer.Write(issue.State);
         }
 

@@ -260,32 +260,39 @@ namespace Milestone.Model
             if (!iso.FileExists(RepoFilename))
                 return;
 
-            using (var stream = iso.OpenFile(RepoFilename, FileMode.Open, FileAccess.Read))
-            using (var br = new BinaryReader(stream))
+            try
             {
-                var fileVer = br.ReadInt32();
-                var numContexts = br.ReadInt32();
-                for (int i = 0; i < numContexts; i++)
+                using (var stream = iso.OpenFile(RepoFilename, FileMode.Open, FileAccess.Read))
+                using (var br = new BinaryReader(stream))
                 {
-                    var login = br.ReadString();
-                    foreach (var context in Contexts)
+                    var fileVer = br.ReadInt32();
+                    var numContexts = br.ReadInt32();
+                    for (int i = 0; i < numContexts; i++)
                     {
-                        if (context.User.Login.Equals(login))
+                        var login = br.ReadString();
+                        foreach (var context in Contexts)
                         {
-                            var numMyRepos = br.ReadInt32();
-                            context.Repositories.Clear();
-                            for (int j = 0; j < numMyRepos; j++)
+                            if (context.User.Login.Equals(login))
                             {
-                                var repo = new Repo();
-                                repo.Load(br, fileVer);
-                                context.Repositories.Add(repo);
+                                var numMyRepos = br.ReadInt32();
+                                context.Repositories.Clear();
+                                for (int j = 0; j < numMyRepos; j++)
+                                {
+                                    var repo = new Repo();
+                                    repo.Load(br, fileVer);
+                                    context.Repositories.Add(repo);
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
-                }
 
-                br.Close();
+                    br.Close();
+                }
+            }
+            catch (EndOfStreamException ex)
+            {
+                //TODO: Delete file
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Navigation;
 using Milestone.ViewModel;
 using NGitHub.Models;
@@ -13,6 +14,19 @@ namespace Milestone.Views
         public IssueList()
         {
             InitializeComponent();
+            Loaded += MainPageLoaded;
+        }
+
+        void MainPageLoaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //Inelegant solution to a stupid problem
+            var cvsOpen = Resources["cvsOpen"] as CollectionViewSource;
+            cvsOpen.View.MoveCurrentToPosition(-1);
+            lstOpen.ItemsSource = cvsOpen.View;
+
+            var cvsClosed = Resources["cvsClosed"] as CollectionViewSource;
+            cvsClosed.View.MoveCurrentToPosition(-1);
+            lstClosed.ItemsSource = cvsClosed.View;
         }
 
         public IssuesViewModel ViewModel

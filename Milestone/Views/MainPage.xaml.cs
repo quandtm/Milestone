@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Navigation;
 using Milestone.Model;
 using Milestone.ViewModel;
@@ -17,6 +18,19 @@ namespace Milestone.Views
         public MainPage()
         {
             InitializeComponent();
+            Loaded += MainPageLoaded;
+        }
+
+        void MainPageLoaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //Inelegant solution to a stupid problem
+            var cvs = Resources["cvsOwned"] as CollectionViewSource;
+            cvs.View.MoveCurrentToPosition(-1);
+            lstMine.ItemsSource = cvs.View;
+
+            var cvsWatched = Resources["cvsWatched"] as CollectionViewSource;
+            cvsWatched.View.MoveCurrentToPosition(-1);
+            lstWatched.ItemsSource = cvsWatched.View;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
