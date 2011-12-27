@@ -51,5 +51,15 @@ namespace Milestone.Views
             list.SelectedIndex = -1;
             _ignoreSelectionChanged = false;
         }
+
+        private void CvsOpenFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        {
+            e.Accepted = ((Issue) e.Item).State == "open";
+        }
+        private void CvsClosedFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        {
+            e.Accepted = ((Issue) e.Item).State == "closed";
+        }
+        
     }
 }
