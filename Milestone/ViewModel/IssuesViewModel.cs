@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
-using System.Windows.Threading;
 using Milestone.Model;
+using NGitHub.Models;
 
 namespace Milestone.ViewModel
 {
@@ -40,12 +40,24 @@ namespace Milestone.ViewModel
             }
         }
 
-        private readonly Dispatcher _dispatcher;
+        
         private readonly GitHubModel _model;
 
-        public IssuesViewModel(Dispatcher dispatcher, GitHubModel model)
+        private Issue _selectedIssue;
+        public Issue SelectedIssue
         {
-            _dispatcher = dispatcher;
+            get { return _selectedIssue; }
+            set {
+                if (value != null)
+                {
+                    _selectedIssue = value;
+                    
+                }
+            }
+        }
+
+        public IssuesViewModel(GitHubModel model)
+        {
             _model = model;
         }
     }
