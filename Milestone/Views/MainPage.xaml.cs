@@ -70,5 +70,10 @@ namespace Milestone.Views
 
             NavigationService.Navigate(new Uri("/Views/IssueList.xaml?context=" + _contextIndex + "&repo=" + repo.Repository.Name.Replace(" ", "%20"), UriKind.Relative));
         }
+
+        private void About(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/AboutView.xaml", UriKind.Relative));
+        }
     }
 }

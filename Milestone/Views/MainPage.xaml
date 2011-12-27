@@ -37,7 +37,7 @@
         <shell:ApplicationBar x:Name="appBar" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="btnLogout" Text="logout" IsEnabled="True" Click="Logout"/>
-                <shell:ApplicationBarMenuItem x:Name="btnAbout" IsEnabled="True" Text="about"/>
+                <shell:ApplicationBarMenuItem x:Name="btnAbout" IsEnabled="True" Text="about" Click="About"/>
             </shell:ApplicationBar.MenuItems>
             <shell:ApplicationBarIconButton x:Name="btnRefresh" IconUri="/icons/appbar.refresh.rest.png" Text="refresh"/>
         </shell:ApplicationBar>
