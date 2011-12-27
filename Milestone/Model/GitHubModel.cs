@@ -19,8 +19,9 @@ namespace Milestone.Model
         private const string AuthFilename = "auth.dat";
         private const int AuthFileVersion = 1;
         private const string RepoFilename = "repotoc.dat";
-        private const string IssuesFilename = "{0}_issues.dat";
         private const int RepoFileVersion = 1;
+        private const string IssuesFilename = "{0}_issues.dat";
+        private const int IssuesFileVersion = 1;
 
         public bool IsAuthenticated { get; private set; }
 
@@ -37,7 +38,7 @@ namespace Milestone.Model
         public GitHubModel(Dispatcher dispatcher)
         {
             Dispatcher = dispatcher;
-            _exceptionAction = ex => Dispatcher.BeginInvoke(() => 
+            _exceptionAction = ex => Dispatcher.BeginInvoke(() =>
                 MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK)
                 );
 
@@ -156,7 +157,7 @@ namespace Milestone.Model
                                                                                    {
                                                                                        foreach (var c in comments)
                                                                                        {
-                                                                                          //i.Comments
+                                                                                           //i.Comments
                                                                                        }
                                                                                    }),
                                             _exceptionAction);
@@ -177,7 +178,21 @@ namespace Milestone.Model
 
         private void SaveIssues(IsolatedStorageFile iso)
         {
+            foreach (var context in Contexts)
+            {
+                foreach (var repo in context.MyRepositories)
+                    SaveRepoIssues(iso, repo);
+                foreach (var repo in context.WatchedRepositories)
+                    SaveRepoIssues(iso, repo);
+            }
+        }
 
+        private void SaveRepoIssues(IsolatedStorageFile iso, Repo repo)
+        {
+            using (var stream = iso.OpenFile(string.Format(IssuesFilename, repo.Repository.Name), FileMode.Create, FileAccess.Write))
+            using (var bw = new BinaryWriter(stream))
+            {
+            }
         }
 
         private void SaveRepos(IsolatedStorageFile iso)
