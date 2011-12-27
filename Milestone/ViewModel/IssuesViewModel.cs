@@ -11,7 +11,7 @@ namespace Milestone.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public Context Context { get; set; }
         public Repo Repo { get; set; }
-        private int _contextIndex =-1;
+        private int _contextIndex = -1;
         public int ContextIndex
         {
             get { return _contextIndex; }
@@ -31,27 +31,28 @@ namespace Milestone.ViewModel
                 _repoName = value;
                 if (Context != null)
                 {
-                    var x = Context.MyRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                    var y = Context.WatchedRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                    Repo = x ?? y;
+                    Repo = Context.MyRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
+                    if (Repo == null) // Performance with large numbers of issues
+                        Repo = Context.WatchedRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
 
-                    _model.LoadIssues(Context, Repo);                    
+                    _model.DownloadIssues(Context, Repo);
                 }
             }
         }
 
-        
+
         private readonly GitHubModel _model;
 
         private Issue _selectedIssue;
         public Issue SelectedIssue
         {
             get { return _selectedIssue; }
-            set {
+            set
+            {
                 if (value != null)
                 {
                     _selectedIssue = value;
-                    
+
                 }
             }
         }

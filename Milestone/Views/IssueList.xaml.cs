@@ -8,6 +8,8 @@ namespace Milestone.Views
 {
     public partial class IssueList
     {
+        private bool _ignoreSelectionChanged = false;
+
         public IssueList()
         {
             InitializeComponent();
@@ -34,13 +36,20 @@ namespace Milestone.Views
             base.OnNavigatedTo(e);
         }
 
-        private void LstOpenOnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OpenIssue(object sender, SelectionChangedEventArgs e)
         {
-            if (lstOpen.SelectedItem == null)
+            var list = sender as ListBox;
+            if (list == null)
                 return;
 
-            var issue = (Issue)lstOpen.SelectedItem;
+            if (list.SelectedItem == null || _ignoreSelectionChanged)
+                return;
+
+            var issue = (Issue)list.SelectedItem;
             NavigationService.Navigate(new Uri("/Views/IssueView.xaml?id=" + issue.Number + "&context=" + ViewModel.ContextIndex + "&repo=" + ViewModel.RepoName, UriKind.Relative));
+            _ignoreSelectionChanged = true;
+            list.SelectedIndex = -1;
+            _ignoreSelectionChanged = false;
         }
     }
 }

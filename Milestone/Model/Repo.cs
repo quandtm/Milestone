@@ -20,13 +20,12 @@ namespace Milestone.Model
         {
             Repository = repository;
             Issues = new ObservableCollection<Issue>();
-            
         }
 
         public Repo(Repository repository, IEnumerable<Issue> issues)
         {
             Repository = repository;
-            Issues = new ObservableCollection<Issue>(issues);
+            issues = new ObservableCollection<Issue>(issues);
         }
     }
 }

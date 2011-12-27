@@ -79,6 +79,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DateToRelativeConverter.cs" />
+    <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Extensions\NavigationExtensions.cs" />
     <Compile Include="Model\GitHubModel.cs" />
     <Compile Include="Model\Repo.cs" />

@@ -9,16 +9,14 @@ namespace Milestone.Extensions
         {
             writer.Write(repo.Name);
             writer.Write(repo.HasIssues);
-            writer.Write(repo.Description);
-            writer.Write(repo.NumberOfForks);
+            writer.Write(repo.Owner);
         }
 
         public static void Load(this Repository repo, BinaryReader reader, int fileVersion)
         {
             repo.Name = reader.ReadString();
             repo.HasIssues = reader.ReadBoolean();
-            repo.Description = reader.ReadString();
-            repo.NumberOfForks = reader.ReadInt32();
+            repo.Owner = reader.ReadString();
         }
     }
 }

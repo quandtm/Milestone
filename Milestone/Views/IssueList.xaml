@@ -21,7 +21,7 @@
     </phone:PhoneApplicationPage.Resources>
     <controls:Pivot Grid.Row="1" Title="{Binding RepoName}">
         <controls:PivotItem Header="open">
-            <ListBox x:Name="lstOpen" ItemsSource="{Binding Repo.Issues}" Margin="12,0" SelectionChanged="LstOpenOnSelectionChanged">
+            <ListBox x:Name="lstOpen" ItemsSource="{Binding Repo.Issues}" Margin="12,0" SelectionChanged="OpenIssue">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,0,0,24">
@@ -44,7 +44,23 @@
             </ListBox>
         </controls:PivotItem>
         <controls:PivotItem Header="closed">
-            <Grid/>
+        	<ListBox x:Name="lstClosed" Margin="12,0" SelectionChanged="OpenIssue">
+        		<ListBox.ItemTemplate>
+        			<DataTemplate>
+        				<StackPanel Margin="0,0,0,24">
+        					<TextBlock TextWrapping="Wrap" Text="{Binding Title}" FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+        					<TextBlock><Run Foreground="#7FFFFFFF" Text="by "/><Run Text=" "/><Run Text="{Binding User}" /><Run Text=" "/><Run  Foreground="#7FFFFFFF" Text="{Binding CreatedAt, Converter={StaticResource DateToRelativeConverter}}" /></TextBlock>
+        					<ListBox ItemsSource="{Binding Labels}" IsHitTestVisible="False">
+        						<ListBox.ItemTemplate>
+        							<DataTemplate>
+        								<TextBlock Text="{Binding Name}" />
+        							</DataTemplate>
+        						</ListBox.ItemTemplate>
+        					</ListBox>
+        				</StackPanel>
+        			</DataTemplate>
+        		</ListBox.ItemTemplate>
+        	</ListBox>
         </controls:PivotItem>
     </controls:Pivot>
 </phone:PhoneApplicationPage>

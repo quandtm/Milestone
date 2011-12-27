@@ -31,10 +31,9 @@ namespace Milestone.ViewModel
                 _repoName = value;
                 if (Context != null)
                 {
-                    var x = Context.MyRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                    var y = Context.WatchedRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                    Repo = x ?? y;
-
+                    Repo = Context.MyRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
+                    if (Repo == null)
+                        Repo = Context.WatchedRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
                 }
             }
         }

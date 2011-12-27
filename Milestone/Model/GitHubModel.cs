@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using Milestone.Extensions;
@@ -136,21 +137,34 @@ namespace Milestone.Model
                                                             context.WatchedRepositories.Add(new Repo(repo));
                                                     }), _exceptionAction);
         }
-        public void LoadIssues(Context context, Repo r)
+        public void DownloadIssues(Context context, Repo r)
         {
+            // Download open issues
             _client.Issues.GetIssuesAsync(r.Repository.Owner, r.Repository.Name, State.Open,
                 issues => Dispatcher.BeginInvoke(() =>
                                                      {
                                                          foreach (var i in issues)
                                                          {
-                                                             r.Issues.Add(i);
+                                                             if (r.Issues.FirstOrDefault(iss => iss.Number == i.Number) == null)
+                                                                 r.Issues.Add(i);
                                                          }
                                                      }),
+                _exceptionAction);
 
+            // Download closed issues
+            _client.Issues.GetIssuesAsync(r.Repository.Owner, r.Repository.Name, State.Closed,
+                issues => Dispatcher.BeginInvoke(() =>
+                                                    {
+                                                        foreach (var i in issues)
+                                                        {
+                                                            if (r.Issues.FirstOrDefault(iss => iss.Number == i.Number) == null)
+                                                                r.Issues.Add(i);
+                                                        }
+                                                    }),
                 _exceptionAction);
         }
 
-        public void LoadIssueComments(Context context, Repo r, Issue i)
+        public void DownloadIssueComments(Context context, Repo r, Issue i)
         {
             _client.Issues.GetCommentsAsync(context.User.Login, r.Repository.Name, i.Number,
                                             comments => Dispatcher.BeginInvoke(() =>
@@ -178,21 +192,10 @@ namespace Milestone.Model
 
         private void SaveIssues(IsolatedStorageFile iso)
         {
-            foreach (var context in Contexts)
-            {
-                foreach (var repo in context.MyRepositories)
-                    SaveRepoIssues(iso, repo);
-                foreach (var repo in context.WatchedRepositories)
-                    SaveRepoIssues(iso, repo);
-            }
         }
 
         private void SaveRepoIssues(IsolatedStorageFile iso, Repo repo)
         {
-            using (var stream = iso.OpenFile(string.Format(IssuesFilename, repo.Repository.Name), FileMode.Create, FileAccess.Write))
-            using (var bw = new BinaryWriter(stream))
-            {
-            }
         }
 
         private void SaveRepos(IsolatedStorageFile iso)
@@ -242,7 +245,16 @@ namespace Milestone.Model
             {
                 LoadAuth(iso);
                 LoadRepos(iso);
+                LoadIssues(iso);
             }
+        }
+
+        private void LoadIssues(IsolatedStorageFile iso)
+        {
+        }
+
+        private void LoadRepoIssues(IsolatedStorageFile iso, Repo repo)
+        {
         }
 
         private void LoadRepos(IsolatedStorageFile iso)
