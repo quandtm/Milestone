@@ -137,7 +137,7 @@ namespace Milestone.Model
         }
         public void LoadIssues(Context context, Repo r)
         {
-            _client.Issues.GetIssuesAsync(context.User.Login, r.Repository.Name, State.Open,
+            _client.Issues.GetIssuesAsync(r.Repository.Owner, r.Repository.Name, State.Open,
                 issues => Dispatcher.BeginInvoke(() =>
                                                      {
                                                          foreach (var i in issues)
