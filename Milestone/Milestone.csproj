@@ -55,12 +55,6 @@
     <Reference Include="Coding4Fun.Phone.Controls">
       <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.4.8\lib\Coding4Fun.Phone.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Coding4Fun.Phone.Controls.Toolkit">
-      <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.4.8\lib\Coding4Fun.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
-      <HintPath>..\packages\MvvmLight.3.1.1\lib\sl4-windowsphone71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight.WP71">
       <HintPath>..\packages\MvvmLight.3.1.1\lib\sl4-windowsphone71\GalaSoft.MvvmLight.WP71.dll</HintPath>
     </Reference>
@@ -68,10 +62,6 @@
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.4.8\lib\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.3\lib\sl3-wp\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NGitHub.WindowsPhone, Version=0.4.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NGitHub.0.4.3\lib\sl3-wp\NGitHub.WindowsPhone.dll</HintPath>
@@ -82,22 +72,18 @@
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLight.3.1.1\lib\sl4-windowsphone71\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DateToRelativeConverter.cs" />
+    <Compile Include="Extensions\NavigationExtensions.cs" />
     <Compile Include="Model\GitHubModel.cs" />
     <Compile Include="Model\Repo.cs" />
-    <Compile Include="Model\RepositoryExtensions.cs" />
-    <Compile Include="Model\UserExtensions.cs" />
+    <Compile Include="Extensions\RepositoryExtensions.cs" />
+    <Compile Include="Extensions\UserExtensions.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="ViewModel\IssuesViewModel.cs" />
     <Compile Include="ViewModel\IssueDetailsViewModel.cs" />

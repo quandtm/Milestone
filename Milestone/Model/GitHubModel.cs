@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Threading;
+using Milestone.Extensions;
 using NGitHub;
 using NGitHub.Models;
 using NGitHub.Web;
@@ -30,11 +31,12 @@ namespace Milestone.Model
         public Dispatcher Dispatcher { get; set; }
 
         private string _username, _password;
-        private Action<GitHubException> _exceptionAction;
+        private readonly Action<GitHubException> _exceptionAction;
 
 
-        public GitHubModel()
+        public GitHubModel(Dispatcher dispatcher)
         {
+            Dispatcher = dispatcher;
             _exceptionAction = ex => Dispatcher.BeginInvoke(() => MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK));
 
             _client = new GitHubClient();
@@ -143,6 +145,19 @@ namespace Milestone.Model
                                                      }),
 
                 _exceptionAction);
+        }
+
+        public void LoadIssueComments(Context context, Repo r, Issue i)
+        {
+            _client.Issues.GetCommentsAsync(context.User.Login, r.Repository.Name, i.Number,
+                                            comments => Dispatcher.BeginInvoke(() =>
+                                                                                   {
+                                                                                       foreach (var c in comments)
+                                                                                       {
+                                                                                          //i.Comments
+                                                                                       }
+                                                                                   }),
+                                            _exceptionAction);
         }
 
         public void Save()

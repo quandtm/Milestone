@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using NGitHub.Models;
 
-namespace Milestone.Model
+namespace Milestone.Extensions
 {
     public static class RepositoryExtensions
     {

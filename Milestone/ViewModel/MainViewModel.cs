@@ -9,9 +9,9 @@ namespace Milestone.ViewModel
         public Context SelectedContext { get; set; }
         public bool HasSelectedContext { get { return SelectedContext != null; } }
 
-        public MainViewModel()
+        public MainViewModel(GitHubModel model)
         {
-            Model = ViewModelLocator.Model;
+            Model = model;
         }
 
         public void Refresh()

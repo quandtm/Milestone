@@ -1,4 +1,5 @@
 ﻿using System.Windows.Navigation;
+using Milestone.Extensions;
 using Milestone.ViewModel;
 
 namespace Milestone.Views
@@ -12,16 +13,17 @@ namespace Milestone.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var contextIndex = int.Parse(NavigationContext.QueryString["context"]);
-            var repoName = NavigationContext.QueryString["repo"];
-            var issueId = int.Parse(NavigationContext.QueryString["id"]);
+            var contextIndex =  NavigationContext.TryGetKey("context");
+            var repoName = NavigationContext.TryGetStringKey("repo");
+            var issueId = NavigationContext.TryGetKey("id");
+            
 
             var vm = (DataContext as IssueDetailsViewModel);
-            if (vm != null)
+            if (vm != null && contextIndex.HasValue && issueId.HasValue)
             {
-                vm.ContextIndex = contextIndex;
+                vm.ContextIndex = contextIndex.Value;
                 vm.RepoName = repoName;
-                vm.Id = issueId;
+                vm.Id = issueId.Value;
             }
             base.OnNavigatedTo(e);
         }
