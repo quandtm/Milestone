@@ -37,7 +37,9 @@ namespace Milestone.Model
         public GitHubModel(Dispatcher dispatcher)
         {
             Dispatcher = dispatcher;
-            _exceptionAction = ex => Dispatcher.BeginInvoke(() => MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK));
+            _exceptionAction = ex => Dispatcher.BeginInvoke(() => 
+                MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK)
+                );
 
             _client = new GitHubClient();
 
