@@ -8,7 +8,7 @@ namespace Milestone.Views
 {
     public partial class IssueList
     {
-        private bool _ignoreSelectionChanged = false;
+        private bool _ignoreSelection = false;
 
         public IssueList()
         {
@@ -38,28 +38,31 @@ namespace Milestone.Views
 
         private void OpenIssue(object sender, SelectionChangedEventArgs e)
         {
+            if (_ignoreSelection)
+                return;
+
             var list = sender as ListBox;
             if (list == null)
                 return;
 
-            if (list.SelectedItem == null || _ignoreSelectionChanged)
+            if (list.SelectedItem == null)
                 return;
 
             var issue = (Issue)list.SelectedItem;
-            NavigationService.Navigate(new Uri("/Views/IssueView.xaml?id=" + issue.Number + "&context=" + ViewModel.ContextIndex + "&repo=" + ViewModel.RepoName, UriKind.Relative));
-            _ignoreSelectionChanged = true;
+            _ignoreSelection = true;
             list.SelectedIndex = -1;
-            _ignoreSelectionChanged = false;
+            _ignoreSelection = false;
+            NavigationService.Navigate(new Uri("/Views/IssueView.xaml?id=" + issue.Number + "&context=" + ViewModel.ContextIndex + "&repo=" + ViewModel.RepoName, UriKind.Relative));
         }
 
         private void CvsOpenFilter(object sender, System.Windows.Data.FilterEventArgs e)
         {
-            e.Accepted = ((Issue) e.Item).State == "open";
+            e.Accepted = ((Issue)e.Item).State == "open";
         }
         private void CvsClosedFilter(object sender, System.Windows.Data.FilterEventArgs e)
         {
-            e.Accepted = ((Issue) e.Item).State == "closed";
+            e.Accepted = ((Issue)e.Item).State == "closed";
         }
-        
+
     }
 }

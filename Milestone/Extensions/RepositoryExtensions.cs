@@ -9,6 +9,7 @@ namespace Milestone.Extensions
         public static void Save(this Repo repo, BinaryWriter writer)
         {
             writer.Write(repo.Repository.Name);
+            writer.Write((short)repo.Type);
             writer.Write(repo.Repository.HasIssues);
             writer.Write(repo.Repository.Owner);
             writer.Write(repo.Issues.Count);
@@ -20,6 +21,7 @@ namespace Milestone.Extensions
         {
             repo.Repository = new Repository();
             repo.Repository.Name = reader.ReadString();
+            repo.Type = (RepoType)reader.ReadInt16();
             repo.Repository.HasIssues = reader.ReadBoolean();
             repo.Repository.Owner = reader.ReadString();
             var numIssues = reader.ReadInt32();

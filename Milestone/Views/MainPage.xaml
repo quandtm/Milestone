@@ -18,6 +18,8 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
+        <CollectionViewSource x:Key="cvsOwned" Source="{Binding SelectedContext.Repositories}" Filter="CvsOwnedFilter" />
+        <CollectionViewSource x:Key="cvsWatched" Source="{Binding SelectedContext.Repositories}" Filter="CvsWatchedFilter" />
     </phone:PhoneApplicationPage.Resources>
 
     <phone:PhoneApplicationPage.FontFamily>
@@ -68,10 +70,10 @@
 
         <controls:Pivot x:Name="pivot" Title="{Binding SelectedContext.User.Name}" Grid.Row="1" Margin="0,0,0,12" Canvas.ZIndex="1" Visibility="{Binding HasSelectedContext, Converter={StaticResource BoolToVisConv}, Mode=OneWay}">
             <controls:PivotItem Header="mine">
-                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding SelectedContext.MyRepositories}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
+                <ListBox x:Name="lstMine" ItemTemplate="{StaticResource RepoListDataTemplate}" ItemsSource="{Binding Source={StaticResource cvsOwned}}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
             </controls:PivotItem>
             <controls:PivotItem Header="watched">
-                <ListBox x:Name="lstWatched" ItemsSource="{Binding SelectedContext.WatchedRepositories}" ItemTemplate="{StaticResource RepoListDataTemplate}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
+                <ListBox x:Name="lstWatched" ItemsSource="{Binding Source={StaticResource cvsWatched}}" ItemTemplate="{StaticResource RepoListDataTemplate}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
             </controls:PivotItem>
         </controls:Pivot>
 

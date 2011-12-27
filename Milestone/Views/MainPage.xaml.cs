@@ -75,5 +75,15 @@ namespace Milestone.Views
         {
             NavigationService.Navigate(new Uri("/Views/AboutView.xaml", UriKind.Relative));
         }
+
+        private void CvsOwnedFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        {
+            e.Accepted = (((Repo)e.Item).Type & RepoType.Owned) == RepoType.Owned;
+        }
+
+        private void CvsWatchedFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        {
+            e.Accepted = (((Repo)e.Item).Type & RepoType.Watched) == RepoType.Watched;
+        }
     }
 }

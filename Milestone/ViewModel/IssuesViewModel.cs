@@ -31,9 +31,7 @@ namespace Milestone.ViewModel
                 _repoName = value;
                 if (Context != null)
                 {
-                    Repo = Context.MyRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                    if (Repo == null) // Performance with large numbers of issues
-                        Repo = Context.WatchedRepositories.FirstOrDefault(r => r.Repository.Name == RepoName);
+                    Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
 
                     _model.DownloadIssues(Context, Repo);
                 }

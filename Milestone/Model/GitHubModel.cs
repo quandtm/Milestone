@@ -123,19 +123,34 @@ namespace Milestone.Model
             _client.Users.GetRepositoriesAsync(context.User.Login,
                     repos => Dispatcher.BeginInvoke(() =>
                                                         {
-                                                            context.MyRepositories.Clear();
                                                             foreach (var repo in repos)
-                                                                context.MyRepositories.Add(new Repo(repo));
+                                                            {
+                                                                var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.Name == repo.Name);
+                                                                if (newRepo == null)
+                                                                {
+                                                                    newRepo = new Repo(repo);
+                                                                    context.Repositories.Add(newRepo);
+                                                                }
+                                                                newRepo.Type |= RepoType.Owned;
+                                                            }
                                                         }), _exceptionAction);
 
             _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
                 repos => Dispatcher.BeginInvoke(() =>
                                                     {
-                                                        context.WatchedRepositories.Clear();
                                                         foreach (var repo in repos)
-                                                            context.WatchedRepositories.Add(new Repo(repo));
+                                                        {
+                                                            var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.Name == repo.Name);
+                                                            if (newRepo == null)
+                                                            {
+                                                                newRepo = new Repo(repo);
+                                                                context.Repositories.Add(newRepo);
+                                                            }
+                                                            newRepo.Type |= RepoType.Watched;
+                                                        }
                                                     }), _exceptionAction);
         }
+
         public void DownloadIssues(Context context, Repo r)
         {
             // Download open issues
@@ -199,13 +214,9 @@ namespace Milestone.Model
                 foreach (var context in Contexts)
                 {
                     bw.Write(context.User.Login);
-                    bw.Write(context.MyRepositories.Count);
-                    for (int i = 0; i < context.MyRepositories.Count; i++)
-                        context.MyRepositories[i].Save(bw);
-
-                    bw.Write(context.WatchedRepositories.Count);
-                    for (int i = 0; i < context.WatchedRepositories.Count; i++)
-                        context.WatchedRepositories[i].Save(bw);
+                    bw.Write(context.Repositories.Count);
+                    for (int i = 0; i < context.Repositories.Count; i++)
+                        context.Repositories[i].Save(bw);
                 }
 
                 bw.Close();
@@ -262,21 +273,12 @@ namespace Milestone.Model
                         if (context.User.Login.Equals(login))
                         {
                             var numMyRepos = br.ReadInt32();
-                            context.MyRepositories.Clear();
+                            context.Repositories.Clear();
                             for (int j = 0; j < numMyRepos; j++)
                             {
                                 var repo = new Repo();
                                 repo.Load(br, fileVer);
-                                context.MyRepositories.Add(repo);
-                            }
-
-                            var numWatchedRepos = br.ReadInt32();
-                            context.WatchedRepositories.Clear();
-                            for (int j = 0; j < numWatchedRepos; j++)
-                            {
-                                var repo = new Repo();
-                                repo.Load(br, fileVer);
-                                context.WatchedRepositories.Add(repo);
+                                context.Repositories.Add(repo);
                             }
                             break;
                         }
