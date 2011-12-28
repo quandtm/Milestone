@@ -37,7 +37,7 @@
     </phone:PhoneApplicationPage.DataContext>
 
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Loading..." />
+        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Retrieving Repositories..." />
     </shell:SystemTray.ProgressIndicator>
 
     <phone:PhoneApplicationPage.ApplicationBar>

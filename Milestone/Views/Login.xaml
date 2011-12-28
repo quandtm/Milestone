@@ -19,7 +19,7 @@
 
 
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="False" Text="Loading..." />
+        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="False" Text="Logging in..." />
     </shell:SystemTray.ProgressIndicator>
     
     <Grid x:Name="LayoutRoot" Background="Transparent">

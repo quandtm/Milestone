@@ -23,7 +23,7 @@
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Loading..." />
+        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Retrieving Comments..." />
     </shell:SystemTray.ProgressIndicator>
     <ScrollViewer>
         <StackPanel Margin="12">
