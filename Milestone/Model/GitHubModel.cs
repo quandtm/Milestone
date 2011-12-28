@@ -8,7 +8,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Messaging;
 using Milestone.Extensions;
+using Milestone.Messages;
 using NGitHub;
 using NGitHub.Models;
 using NGitHub.Web;
@@ -39,7 +41,7 @@ namespace Milestone.Model
         {
             Dispatcher = dispatcher;
             _exceptionAction = ex => Dispatcher.BeginInvoke(() =>
-                MessageBox.Show("Error: " + ex.Message, "", MessageBoxButton.OK)
+                    MessageBox.Show("Error: " + Enum.GetName(typeof(ErrorType), ex.ErrorType), "", MessageBoxButton.OK)
                 );
 
             _client = new GitHubClient();
@@ -105,21 +107,29 @@ namespace Milestone.Model
             }
         }
 
-        public void RefreshAllRepos()
+        public void RefreshAllRepos(Action onStart, Action onComplete)
         {
             // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
                 return;
 
             foreach (var context in Contexts)
-                RefreshContextRepos(context);
+                RefreshContextRepos(context, onStart, onComplete);
         }
 
-        public void RefreshContextRepos(Context context)
+        public void RefreshContextRepos(Context context, Action onStart, Action onComplete)
         {
             // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
                 return;
+
+            if (onStart != null)
+            {
+                // Call twice for two GET operations
+                onStart();
+                onStart();
+            }
+
             _client.Users.GetRepositoriesAsync(context.User.Login,
                     repos => Dispatcher.BeginInvoke(() =>
                                                         {
@@ -133,6 +143,9 @@ namespace Milestone.Model
                                                                 }
                                                                 newRepo.Type |= RepoType.Owned;
                                                             }
+                                                            Messenger.Default.Send<RebindMessage>(new RebindMessage());
+                                                            if (onComplete != null)
+                                                                onComplete();
                                                         }), _exceptionAction);
 
             _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
@@ -148,11 +161,20 @@ namespace Milestone.Model
                                                             }
                                                             newRepo.Type |= RepoType.Watched;
                                                         }
+                                                        Messenger.Default.Send<RebindMessage>(new RebindMessage());
+                                                        if (onComplete != null)
+                                                            onComplete();
                                                     }), _exceptionAction);
         }
 
-        public void DownloadIssues(Context context, Repo r)
+        public void DownloadIssues(Context context, Repo r, Action onStart, Action onComplete)
         {
+            if (onStart != null)
+            {
+                // Call twice for two GET operations
+                onStart();
+                onStart();
+            }
             // Download open issues
             _client.Issues.GetIssuesAsync(r.Repository.Owner, r.Repository.Name, State.Open,
                 issues => Dispatcher.BeginInvoke(() =>
@@ -162,6 +184,8 @@ namespace Milestone.Model
                                                              if (r.Issues.FirstOrDefault(iss => iss.Number == i.Number) == null)
                                                                  r.Issues.Add(i);
                                                          }
+                                                         if (onComplete != null)
+                                                             onComplete();
                                                      }),
                 _exceptionAction);
 
@@ -174,6 +198,8 @@ namespace Milestone.Model
                                                             if (r.Issues.FirstOrDefault(iss => iss.Number == i.Number) == null)
                                                                 r.Issues.Add(i);
                                                         }
+                                                        if (onComplete != null)
+                                                            onComplete();
                                                     }),
                 _exceptionAction);
         }

@@ -2,9 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
+using GalaSoft.MvvmLight.Messaging;
+using Milestone.Messages;
 using Milestone.Model;
 using Milestone.ViewModel;
-using NGitHub.Models;
 
 namespace Milestone.Views
 {

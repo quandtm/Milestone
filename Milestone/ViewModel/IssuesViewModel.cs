@@ -7,7 +7,6 @@ namespace Milestone.ViewModel
 {
     public class IssuesViewModel : INotifyPropertyChanged
     {
-        public bool IsBusy { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public Context Context { get; set; }
         public Repo Repo { get; set; }
@@ -22,6 +21,13 @@ namespace Milestone.ViewModel
             }
         }
 
+        private int _numBusy = 0;
+        public bool IsBusy
+        {
+            get;
+            set;
+        }
+
         private string _repoName;
         public string RepoName
         {
@@ -33,11 +39,26 @@ namespace Milestone.ViewModel
                 {
                     Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
 
-                    _model.DownloadIssues(Context, Repo);
+                    _model.DownloadIssues(Context, Repo,
+                        () => // onStart
+                        {
+                            ++_numBusy;
+                            SetBusy();
+                        },
+                        () => // onComplete
+                        {
+                            --_numBusy;
+                            SetBusy();
+                        });
                 }
             }
         }
 
+
+        private void SetBusy()
+        {
+            IsBusy = _numBusy > 0;
+        }
 
         private readonly GitHubModel _model;
 

@@ -9,6 +9,13 @@ namespace Milestone.ViewModel
         public Context SelectedContext { get; set; }
         public bool HasSelectedContext { get { return SelectedContext != null; } }
 
+        private int _numBusy = 0;
+        public bool IsBusy
+        {
+            get;
+            set;
+        }
+
         public MainViewModel(GitHubModel model)
         {
             Model = model;
@@ -17,7 +24,22 @@ namespace Milestone.ViewModel
         public void Refresh()
         {
             if (SelectedContext != null && Model != null)
-                Model.RefreshContextRepos(SelectedContext);
+                Model.RefreshContextRepos(SelectedContext,
+                        () => // onStart
+                        {
+                            ++_numBusy;
+                            SetBusy();
+                        },
+                        () => // onComplete
+                        {
+                            --_numBusy;
+                            SetBusy();
+                        });
+        }
+
+        private void SetBusy()
+        {
+            IsBusy = _numBusy > 0;
         }
 
         public void Logout()

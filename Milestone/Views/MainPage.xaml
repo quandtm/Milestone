@@ -35,6 +35,10 @@
         <Binding Path="Main" Source="{StaticResource Locator}"/>
     </phone:PhoneApplicationPage.DataContext>
 
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Loading..." />
+    </shell:SystemTray.ProgressIndicator>
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar x:Name="appBar" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
@@ -52,23 +56,23 @@
         </Grid.RowDefinitions>
 
         <toolkit:ListPicker x:Name="contextSelector" d:LayoutOverrides="Height" Margin="12,0" SelectionChanged="SelectContext" ExpansionMode="FullScreenOnly" ItemsSource="{Binding}" DataContext="{Binding Model.Contexts}">
-        	<toolkit:ListPicker.Resources>
-        		<DataTemplate x:Key="ListPickerTemplate">
-        			<TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" />
-        		</DataTemplate>
-        		<DataTemplate x:Key="ListPickerItemTemplate">
-        			<TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" Foreground="{StaticResource PhoneTextBoxForegroundBrush}" />
-        		</DataTemplate>
-        	</toolkit:ListPicker.Resources>
-        	<toolkit:ListPicker.ItemTemplate>
-        		<StaticResource ResourceKey="ListPickerItemTemplate"/>
-        	</toolkit:ListPicker.ItemTemplate>
-        	<toolkit:ListPicker.FullModeItemTemplate>
-        		<StaticResource ResourceKey="ListPickerTemplate"/>
-        	</toolkit:ListPicker.FullModeItemTemplate>
+            <toolkit:ListPicker.Resources>
+                <DataTemplate x:Key="ListPickerTemplate">
+                    <TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" />
+                </DataTemplate>
+                <DataTemplate x:Key="ListPickerItemTemplate">
+                    <TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" Foreground="{StaticResource PhoneTextBoxForegroundBrush}" />
+                </DataTemplate>
+            </toolkit:ListPicker.Resources>
+            <toolkit:ListPicker.ItemTemplate>
+                <StaticResource ResourceKey="ListPickerItemTemplate"/>
+            </toolkit:ListPicker.ItemTemplate>
+            <toolkit:ListPicker.FullModeItemTemplate>
+                <StaticResource ResourceKey="ListPickerTemplate"/>
+            </toolkit:ListPicker.FullModeItemTemplate>
         </toolkit:ListPicker>
 
-        <controls:Pivot x:Name="pivot" Title="{Binding SelectedContext.User.Name}" Grid.Row="1" Margin="0,0,0,12" Canvas.ZIndex="1" Visibility="{Binding HasSelectedContext, Converter={StaticResource BoolToVisConv}, Mode=OneWay}">
+        <controls:Pivot x:Name="pivot" Title="{Binding SelectedContext.User.Name}" Grid.Row="1" Margin="0,0,0,12" Visibility="{Binding HasSelectedContext, Converter={StaticResource BoolToVisConv}, Mode=OneWay}">
             <controls:PivotItem Header="mine">
                 <ListBox x:Name="lstMine" SelectedItem="{x:Null}" ItemTemplate="{StaticResource RepoListDataTemplate}" SelectionChanged="SelectRepo" Margin="12,0,0,0"/>
             </controls:PivotItem>
