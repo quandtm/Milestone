@@ -16,7 +16,8 @@
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures></SupportedCultures>
+    <SupportedCultures>
+    </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>Milestone.xap</XapFilename>
@@ -84,6 +85,7 @@
     </Compile>
     <Compile Include="Converters\DateToRelativeConverter.cs" />
     <Compile Include="Converters\GravatarIdToUriConverter.cs" />
+    <Compile Include="Converters\OneOrMoreVisibleConverter.cs" />
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Extensions\NavigationExtensions.cs" />
     <Compile Include="Model\GitHubModel.cs" />

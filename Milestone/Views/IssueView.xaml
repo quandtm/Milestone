@@ -26,11 +26,11 @@
                 </StackPanel>
                 <Image VerticalAlignment="Top" HorizontalAlignment="Left" Width="64" Source="{Binding Issue.GravatarId, ConverterParameter=64, Converter={StaticResource GravatarIdToUriConverter}}"/>
             </Grid>
-            
-            <ListBox ItemsSource="{Binding Comments}" Margin="0,24,0,0">
-                <ListBox.ItemTemplate>
+
+            <ItemsControl ItemsSource="{Binding Comments}">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid VerticalAlignment="Top">
+                        <Grid VerticalAlignment="Top" Margin="0,24,0,0">
                             <StackPanel VerticalAlignment="Top" Margin="74,0,0,0">
                                 <TextBlock TextWrapping="Wrap" Opacity="0.75">
                                     <Run Text="{Binding User}" FontWeight="Bold" />
@@ -42,8 +42,8 @@
                             <Image VerticalAlignment="Top" HorizontalAlignment="Left" Width="64" Source="{Binding GravatarId, ConverterParameter=64, Converter={StaticResource GravatarIdToUriConverter}}"/>
                         </Grid>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </ScrollViewer>
 
