@@ -42,6 +42,13 @@
             </StackPanel>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar>
+			<shell:ApplicationBar.Buttons>
+				<shell:ApplicationBarIconButton IconUri="/icons/appbar.add.rest.png" Text="add" Click="AddIssue"/>
+			</shell:ApplicationBar.Buttons>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
     <controls:Pivot Grid.Row="1" Title="{Binding RepoName}">
         <controls:PivotItem Header="open">
             <ListBox x:Name="lstOpen" Margin="12,0" SelectionChanged="OpenIssue" ItemTemplate="{StaticResource IssueTemplate}" />

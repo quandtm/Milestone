@@ -28,5 +28,10 @@ namespace Milestone.Views
             }
             base.OnNavigatedTo(e);
         }
+
+        private void ApplicationBarIconButtonClick(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

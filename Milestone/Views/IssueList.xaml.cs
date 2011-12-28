@@ -78,5 +78,9 @@ namespace Milestone.Views
             e.Accepted = ((Issue)e.Item).State == "closed";
         }
 
+        private void AddIssue(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

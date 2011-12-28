@@ -17,6 +17,11 @@
         <Converters:DateToRelativeConverter x:Key="DateToRelativeConverter" />
         <Converters:GravatarIdToUriConverter x:Key="GravatarIdToUriConverter" />
     </phone:PhoneApplicationPage.Resources>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar>
+			<shell:ApplicationBarIconButton IconUri="/icons/appbar.edit.rest.png" Text="comment" Click="ApplicationBarIconButtonClick"/>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
     <ScrollViewer>
         <StackPanel Margin="12">
             <Grid VerticalAlignment="Top">

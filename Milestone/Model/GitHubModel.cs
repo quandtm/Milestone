@@ -180,6 +180,7 @@ namespace Milestone.Model
 
         public void DownloadIssueComments(Context context, Repo r, Issue i, Action<Repo> callback)
         {
+            //_client.Issues.
             _client.Issues.GetCommentsAsync(r.Repository.Owner, r.Repository.Name, i.Number,
                                             comments => Dispatcher.BeginInvoke(() =>
                                                                                    {
