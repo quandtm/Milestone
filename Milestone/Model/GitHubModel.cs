@@ -141,6 +141,10 @@ namespace Milestone.Model
                                                                     newRepo = new Repo(repo);
                                                                     context.Repositories.Add(newRepo);
                                                                 }
+                                                                else
+                                                                {
+                                                                    newRepo.Repository = repo;
+                                                                }
                                                                 newRepo.Type |= RepoType.Owned;
                                                             }
                                                             Messenger.Default.Send<RebindMessage>(new RebindMessage());
@@ -158,6 +162,10 @@ namespace Milestone.Model
                                                             {
                                                                 newRepo = new Repo(repo);
                                                                 context.Repositories.Add(newRepo);
+                                                            }
+                                                            else
+                                                            {
+                                                                newRepo.Repository = repo;
                                                             }
                                                             newRepo.Type |= RepoType.Watched;
                                                         }
