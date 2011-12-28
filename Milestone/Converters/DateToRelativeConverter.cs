@@ -9,7 +9,7 @@ namespace Milestone.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var t = (DateTime) value;
-            var timeSince = (DateTime.Now - t.ToLocalTime());
+            var timeSince = DateTime.UtcNow - t.ToUniversalTime();
             if (timeSince < new TimeSpan(0, 0, 15))
                 return "just now";
 
@@ -29,6 +29,13 @@ namespace Milestone.Converters
                 if (timeSince > new TimeSpan(1, 59, 59))
                     return timeSince.Hours + " hrs ago";
                 return timeSince.Hours + " hr ago";
+            }
+            
+            if (timeSince < new TimeSpan(7,0, 0, 0))
+            {
+                if (timeSince > new TimeSpan(1,23,59,59))
+                    return timeSince.Days + " days ago";
+                return timeSince.Days + " day ago";
             }
 
             return string.Format("{0} {1} {2}", t.ToShortTimeString(), t.DayOfWeek.ToString().Substring(0, 3), "");

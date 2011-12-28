@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using Milestone.Model;
 using NGitHub.Models;
@@ -32,12 +33,19 @@ namespace Milestone.ViewModel
                 if (Context != null)
                 {
                     Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
+                    _model.DownloadIssueComments(Context, Repo, Issue, r => RaisePropertyChanged("Comments"));
                 }
             }
         }
 
         public int Id { get; set; }
-
+        public ObservableCollection<Comment> Comments
+        {
+            get
+            {
+                return Repo.IssueComments.ContainsKey(Issue) ? Repo.IssueComments[Issue] : null;
+            }
+        }
         public Issue Issue
         {
             get

@@ -21,9 +21,10 @@ namespace Milestone.Views
             var vm = (DataContext as IssueDetailsViewModel);
             if (vm != null && contextIndex.HasValue && issueId.HasValue)
             {
+                vm.Id = issueId.Value;
                 vm.ContextIndex = contextIndex.Value;
                 vm.RepoName = repoName;
-                vm.Id = issueId.Value;
+                //HACK: should we have an 'initialize' method rather than triggering on properties?
             }
             base.OnNavigatedTo(e);
         }

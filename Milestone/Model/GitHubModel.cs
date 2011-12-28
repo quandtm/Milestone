@@ -178,15 +178,22 @@ namespace Milestone.Model
                 _exceptionAction);
         }
 
-        public void DownloadIssueComments(Context context, Repo r, Issue i)
+        public void DownloadIssueComments(Context context, Repo r, Issue i, Action<Repo> callback)
         {
-            _client.Issues.GetCommentsAsync(context.User.Login, r.Repository.Name, i.Number,
+            _client.Issues.GetCommentsAsync(r.Repository.Owner, r.Repository.Name, i.Number,
                                             comments => Dispatcher.BeginInvoke(() =>
                                                                                    {
+                                                                                       if (r.IssueComments.ContainsKey(i))
+                                                                                           r.IssueComments[i].Clear();
+                                                                                       else
+                                                                                           r.IssueComments.Add(i, new ObservableCollection<Comment>());
+
                                                                                        foreach (var c in comments)
                                                                                        {
-                                                                                           //i.Comments
+                                                                                           r.IssueComments[i].Add(c);
                                                                                        }
+
+                                                                                       callback(r);
                                                                                    }),
                                             _exceptionAction);
         }

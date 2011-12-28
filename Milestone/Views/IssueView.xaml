@@ -14,17 +14,37 @@
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding IssueDetails, Source={StaticResource Locator}}">
     <phone:PhoneApplicationPage.Resources>
+        <Converters:DateToRelativeConverter x:Key="DateToRelativeConverter" />
         <Converters:GravatarIdToUriConverter x:Key="GravatarIdToUriConverter" />
     </phone:PhoneApplicationPage.Resources>
-	<Grid Margin="12">
-		<StackPanel DataContext="{Binding Issue}" VerticalAlignment="Top" Margin="74,0,0,0">
-			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Title}" VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeLarge}"/>
-			<TextBlock TextWrapping="Wrap" Text="{Binding Body}" />
-		</StackPanel>
-        <Image HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="64" Source="{Binding Issue.GravatarId, Converter={StaticResource GravatarIdToUriConverter}, ConverterParameter=64}"/>
-
-
-	</Grid>
-
+    <ScrollViewer>
+        <StackPanel Margin="12">
+            <Grid VerticalAlignment="Top">
+                <StackPanel DataContext="{Binding Issue}" VerticalAlignment="Top" Margin="74,0,0,0">
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Title}" VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Body}" />
+                </StackPanel>
+                <Image VerticalAlignment="Top" HorizontalAlignment="Left" Width="64" Source="{Binding Issue.GravatarId, ConverterParameter=64, Converter={StaticResource GravatarIdToUriConverter}}"/>
+            </Grid>
+            
+            <ListBox ItemsSource="{Binding Comments}" Margin="0,24,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid VerticalAlignment="Top">
+                            <StackPanel VerticalAlignment="Top" Margin="74,0,0,0">
+                                <TextBlock TextWrapping="Wrap" Opacity="0.75">
+                                    <Run Text="{Binding User}" FontWeight="Bold" />
+                                    <Run Text=" commented " />
+                                    <Run Text="{Binding CreatedAt, Converter={StaticResource DateToRelativeConverter}}" />
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Body}" />
+                            </StackPanel>
+                            <Image VerticalAlignment="Top" HorizontalAlignment="Left" Width="64" Source="{Binding GravatarId, ConverterParameter=64, Converter={StaticResource GravatarIdToUriConverter}}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </ScrollViewer>
 
 </phone:PhoneApplicationPage>
