@@ -19,7 +19,7 @@
     </phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar>
-			<shell:ApplicationBarIconButton IconUri="/icons/appbar.edit.rest.png" Text="comment" Click="ApplicationBarIconButtonClick"/>
+            <shell:ApplicationBarIconButton IconUri="/icons/appbar.edit.rest.png" Text="comment" Click="PostComment"/>
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
     <shell:SystemTray.ProgressIndicator>

@@ -49,7 +49,7 @@ namespace Milestone.Model
         public void Login(string username, string password, Action<bool> onComplete)
         {
             // TODO: Global progress bar
-            _client.Authenticator = new HttpBasicAuthenticator(username, password);
+            InitAuth(username, password);
             _client.Users.GetAuthenticatedUserAsync(
                 new Action<User>(
                     u =>
@@ -87,11 +87,17 @@ namespace Milestone.Model
                 });
         }
 
+        private void InitAuth(string username, string password)
+        {
+            _client.Authenticator = new HttpBasicAuthenticator(username, password);
+        }
+
         public void Logout()
         {
             IsAuthenticated = false;
             _username = _password = null;
 
+            _client.Authenticator = null;
             AuthenticatedUser = null;
             Contexts.Clear();
 
@@ -225,6 +231,39 @@ namespace Milestone.Model
                                             _exceptionAction);
         }
 
+        public void CreateComment(string contextName, string repoName, int issueNumber, string comment, Action onStart, Action onComplete)
+        {
+            if (string.IsNullOrWhiteSpace(comment))
+                return;
+            if (onStart != null)
+                onStart();
+            _client.Issues.CreateCommentAsync(contextName, repoName, issueNumber, comment,
+                (c) =>
+                {
+                    var context = Contexts.FirstOrDefault(con => con.User.Login == contextName);
+                    if (context != null)
+                    {
+                        var repo = context.Repositories.FirstOrDefault(r => r.Repository.Name == repoName);
+                        if (repo != null)
+                        {
+                            var issue = repo.Issues.FirstOrDefault(i => i.Number == issueNumber);
+                            if (issue != null)
+                            {
+                                ObservableCollection<Comment> comments;
+                                if (repo.IssueComments.TryGetValue(issue, out comments))
+                                {
+                                    Dispatcher.BeginInvoke(() => comments.Add(c));
+                                }
+                            }
+                        }
+                    }
+
+                    if (onComplete != null)
+                        onComplete();
+                },
+                _exceptionAction);
+        }
+
         public void Save()
         {
             if (!IsAuthenticated)
@@ -349,6 +388,7 @@ namespace Milestone.Model
                         _username = System.Text.Encoding.UTF8.GetString(unamePlain, 0, unamePlain.Length);
                         _password = System.Text.Encoding.UTF8.GetString(pwordPlain, 0, pwordPlain.Length);
                         IsAuthenticated = true;
+                        InitAuth(_username, _password);
 
                         var numContexts = br.ReadInt32();
                         Contexts.Clear();
@@ -381,7 +421,7 @@ namespace Milestone.Model
             _client.Issues.CreateIssueAsync(r.Repository.Owner,
                                             r.Repository.Name,
                                             title,
-                                            body, 
+                                            body,
                                             callback,
                                             _exceptionAction);
         }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Navigation;
+﻿using System;
+using System.Windows.Navigation;
 using Milestone.Extensions;
 using Milestone.ViewModel;
 
@@ -13,10 +14,10 @@ namespace Milestone.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var contextIndex =  NavigationContext.TryGetKey("context");
+            var contextIndex = NavigationContext.TryGetKey("context");
             var repoName = NavigationContext.TryGetStringKey("repo");
             var issueId = NavigationContext.TryGetKey("id");
-            
+
 
             var vm = (DataContext as IssueDetailsViewModel);
             if (vm != null && contextIndex.HasValue && issueId.HasValue)
@@ -29,9 +30,17 @@ namespace Milestone.Views
             base.OnNavigatedTo(e);
         }
 
-        private void ApplicationBarIconButtonClick(object sender, System.EventArgs e)
+        private void PostComment(object sender, System.EventArgs e)
         {
+            var vm = (DataContext as IssueDetailsViewModel);
 
+            if (vm != null)
+            {
+                var contextName = vm.Context.User.Login;
+                var repoName = vm.RepoName;
+                var issueNum = vm.Issue.Number.ToString();
+                NavigationService.Navigate(new Uri("/Views/NewCommentView.xaml?context=" + contextName + "&repo=" + repoName + "&issue=" + issueNum, UriKind.Relative));
+            }
         }
     }
 }
