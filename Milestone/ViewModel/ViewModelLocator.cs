@@ -40,5 +40,6 @@ namespace Milestone.ViewModel
         public MainViewModel Main { get { return _main ?? (_main = new MainViewModel(Model)); }}
         public IssuesViewModel Issues { get { return _issues ?? ( _issues = new IssuesViewModel(Model)); } }
         public IssueDetailsViewModel IssueDetails { get { return new IssueDetailsViewModel(Model); } }
+        public AddIssueViewModel AddIssue { get { return new AddIssueViewModel(Model);} }
     }
 }

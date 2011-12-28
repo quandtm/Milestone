@@ -375,5 +375,10 @@ namespace Milestone.Model
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void UploadIssue()
+        {
+            
+        }
     }
 }

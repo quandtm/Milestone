@@ -96,9 +96,12 @@
     <Compile Include="Model\Context.cs" />
     <Compile Include="ViewModel\IssuesViewModel.cs" />
     <Compile Include="ViewModel\IssueDetailsViewModel.cs" />
-    <Compile Include="ViewModel\NewIssueViewModel.cs" />
+    <Compile Include="ViewModel\AddIssueViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddIssueView.xaml.cs">
+      <DependentUpon>AddIssueView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IssueList.xaml.cs">
       <DependentUpon>IssueList.xaml</DependentUpon>
@@ -124,6 +127,10 @@
     <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddIssueView.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\IssueList.xaml">
       <SubType>Designer</SubType>

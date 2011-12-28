@@ -80,7 +80,7 @@ namespace Milestone.Views
 
         private void AddIssue(object sender, EventArgs e)
         {
-            
+            NavigationService.Navigate(new Uri("/View/AddIssueView.xaml?repo=" + ViewModel.RepoName, UriKind.Relative));
         }
     }
 }
