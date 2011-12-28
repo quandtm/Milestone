@@ -69,7 +69,7 @@
       <HintPath>..\packages\Newtonsoft.Json.4.0.3\lib\sl3-wp\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NGitHub.WindowsPhone, Version=0.4.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NGitHub.0.4.3\lib\sl3-wp\NGitHub.WindowsPhone.dll</HintPath>
+      <HintPath>..\lib\NGitHub.WindowsPhone.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp.WindowsPhone, Version=102.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.102.3\lib\sl4-wp71\RestSharp.WindowsPhone.dll</HintPath>

@@ -1,4 +1,7 @@
+using System.Windows;
+using System.Windows.Navigation;
 using System.Windows.Threading;
+using Microsoft.Phone.Controls;
 using Milestone.Model;
 
 namespace Milestone.ViewModel

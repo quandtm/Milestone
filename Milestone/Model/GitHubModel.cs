@@ -76,15 +76,15 @@ namespace Milestone.Model
                             onComplete(IsAuthenticated);
                     }),
                 ex =>
+                {
+                    if (ex.ErrorType == ErrorType.Unauthorized)
                     {
-                        if (ex.ErrorType == ErrorType.Unauthorized)
-                        {
-                            Logout();
+                        Logout();
 
-                            if (onComplete != null)
-                                onComplete(IsAuthenticated);
-                        }
-                    });
+                        if (onComplete != null)
+                            onComplete(IsAuthenticated);
+                    }
+                });
         }
 
         public void Logout()
@@ -140,7 +140,7 @@ namespace Milestone.Model
                                                                 else
                                                                     newRepo.Repository = repo;
                                                                 newRepo.Type |= RepoType.Owned;
-                                                                
+
                                                             }
                                                             if (onComplete != null)
                                                                 onComplete();
@@ -160,7 +160,7 @@ namespace Milestone.Model
                                                             }
                                                             else
                                                                 newRepo.Repository = repo;
-                                                            
+
                                                         }
                                                         if (onComplete != null)
                                                             onComplete();
@@ -376,9 +376,14 @@ namespace Milestone.Model
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void UploadIssue()
+        public void UploadIssue(Repo r, string title, string body, Action<Issue> callback)
         {
-            
+            _client.Issues.CreateIssueAsync(r.Repository.Owner,
+                                            r.Repository.Name,
+                                            title,
+                                            body, 
+                                            callback,
+                                            _exceptionAction);
         }
     }
 }
