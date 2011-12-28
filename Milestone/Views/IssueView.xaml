@@ -10,7 +10,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding IssueDetails, Source={StaticResource Locator}}">
     <phone:PhoneApplicationPage.Resources>
@@ -22,6 +22,9 @@
 			<shell:ApplicationBarIconButton IconUri="/icons/appbar.edit.rest.png" Text="comment" Click="ApplicationBarIconButtonClick"/>
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Loading..." />
+    </shell:SystemTray.ProgressIndicator>
     <ScrollViewer>
         <StackPanel Margin="12">
             <Grid VerticalAlignment="Top">

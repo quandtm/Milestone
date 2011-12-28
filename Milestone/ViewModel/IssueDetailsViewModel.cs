@@ -30,11 +30,14 @@ namespace Milestone.ViewModel
             set
             {
                 _repoName = value;
-                if (Context != null)
-                {
-                    Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                    _model.DownloadIssueComments(Context, Repo, Issue, r => RaisePropertyChanged("Comments"));
-                }
+                if (Context == null) return;
+                Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
+                IsBusy = true;
+                _model.DownloadIssueComments(Context, Repo, Issue, r =>
+                                                                       {
+                                                                           IsBusy = false;
+                                                                           RaisePropertyChanged("Comments");
+                                                                       });
             }
         }
 
