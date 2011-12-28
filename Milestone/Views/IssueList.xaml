@@ -23,12 +23,12 @@
         <DataTemplate x:Key="IssueTemplate">
             <StackPanel Margin="0,0,0,24">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Title}" FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
-                <TextBlock>
-                    <Run Foreground="#7FFFFFFF" Text="by "/>
+                <TextBlock Opacity="0.5">
+                    <Run Text="by "/>
                     <Run Text="{Binding User}" />
-                    <Run  Foreground="#7FFFFFFF" Text="{Binding CreatedAt, Converter={StaticResource DateToRelativeConverter}}" />
+                    <Run Text="{Binding CreatedAt, Converter={StaticResource DateToRelativeConverter}}" />
                 </TextBlock>
-                <TextBlock Foreground="#7FFFFFFF" Visibility="{Binding Comments, Converter={StaticResource OneOrMoreVisibleConverter}}" >
+                <TextBlock Opacity="0.5" Visibility="{Binding Comments, Converter={StaticResource OneOrMoreVisibleConverter}}" >
                     <Run Text="{Binding Comments}" />
                     <Run Text=" comments" />
                 </TextBlock>

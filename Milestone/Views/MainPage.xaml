@@ -16,7 +16,17 @@
         <DataTemplate x:Key="RepoListDataTemplate">
             <StackPanel Margin="0,0,0,12" DataContext="{Binding Repository}">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
-                <TextBlock Text="Issues disabled for this project" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}, ConverterParameter=true}" />
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Height="16" Width="16" Opacity="0.5" Margin="2,0,12,0" Visibility="{Binding IsFork, Converter={StaticResource BoolToVisConv}}" Fill="{StaticResource PhoneForegroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                        <Rectangle.RenderTransform>
+                            <CompositeTransform ScaleY="-1"/>
+                        </Rectangle.RenderTransform>
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="/icons/fork.png" Stretch="Uniform"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Text="Issues disabled for this project" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}, ConverterParameter=true}" />
+                </StackPanel>
             </StackPanel>
         </DataTemplate>
         <CollectionViewSource x:Key="cvsOwned" Source="{Binding SelectedContext.Repositories}" Filter="CvsOwnedFilter" />
@@ -56,7 +66,7 @@
             <RowDefinition Height="0.884*"/>
         </Grid.RowDefinitions>
 
-        <toolkit:ListPicker x:Name="contextSelector" d:LayoutOverrides="Height" Margin="12,0" SelectionChanged="SelectContext" ExpansionMode="FullScreenOnly" ItemsSource="{Binding}" DataContext="{Binding Model.Contexts}">
+        <toolkit:ListPicker x:Name="contextSelector" d:LayoutOverrides="Height" Margin="24,12,24,0" SelectionChanged="SelectContext" ExpansionMode="FullScreenOnly" ItemsSource="{Binding}" DataContext="{Binding Model.Contexts}">
             <toolkit:ListPicker.Resources>
                 <DataTemplate x:Key="ListPickerTemplate">
                     <TextBlock Text="{Binding User.Login}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,12" />

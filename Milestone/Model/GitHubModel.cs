@@ -20,7 +20,7 @@ namespace Milestone.Model
         private const string AuthFilename = "auth.dat";
         private const int AuthFileVersion = 1;
         private const string RepoFilename = "repotoc.dat";
-        private const int RepoFileVersion = 1;
+        private const int RepoFileVersion = 2;
 
         public bool IsAuthenticated { get; private set; }
 
@@ -231,30 +231,24 @@ namespace Milestone.Model
                                             _exceptionAction);
         }
 
-        public void CreateComment(string contextName, string repoName, int issueNumber, string comment, Action onStart, Action onComplete)
+        public void CreateComment(string repoOwner, string repoName, int issueNumber, string comment, Action onStart, Action onComplete)
         {
             if (string.IsNullOrWhiteSpace(comment))
                 return;
             if (onStart != null)
                 onStart();
-            _client.Issues.CreateCommentAsync(contextName, repoName, issueNumber, comment,
+            _client.Issues.CreateCommentAsync(repoOwner, repoName, issueNumber, comment,
                 (c) =>
                 {
-                    var context = Contexts.FirstOrDefault(con => con.User.Login == contextName);
+                    var context = Contexts.Select(x => x.Repositories.FirstOrDefault(r => r.Repository.Name == repoName && r.Repository.Owner == repoOwner)).FirstOrDefault();
                     if (context != null)
                     {
-                        var repo = context.Repositories.FirstOrDefault(r => r.Repository.Name == repoName);
-                        if (repo != null)
+                        var issue = context.Issues.FirstOrDefault(i => i.Number == issueNumber);
+
+                        ObservableCollection<Comment> comments;
+                        if (issue != null && context.IssueComments.TryGetValue(issue, out comments))
                         {
-                            var issue = repo.Issues.FirstOrDefault(i => i.Number == issueNumber);
-                            if (issue != null)
-                            {
-                                ObservableCollection<Comment> comments;
-                                if (repo.IssueComments.TryGetValue(issue, out comments))
-                                {
-                                    Dispatcher.BeginInvoke(() => comments.Add(c));
-                                }
-                            }
+                            Dispatcher.BeginInvoke(() => comments.Add(c));
                         }
                     }
 

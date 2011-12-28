@@ -14,6 +14,7 @@ namespace Milestone.Extensions
             writer.Write(repo.Repository.HasIssues);
             writer.Write(repo.Repository.Owner);
             writer.Write(repo.Issues.Count);
+            writer.Write(repo.Repository.IsFork);
             for (int i = 0; i < repo.Issues.Count; i++)
             {
                 ObservableCollection<Comment> comments = null;
@@ -30,6 +31,7 @@ namespace Milestone.Extensions
             repo.Repository.HasIssues = reader.ReadBoolean();
             repo.Repository.Owner = reader.ReadString();
             var numIssues = reader.ReadInt32();
+            repo.Repository.IsFork = reader.ReadBoolean();
             for (int i = 0; i < numIssues; i++)
             {
                 var issue = new Issue();

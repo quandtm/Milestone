@@ -36,10 +36,9 @@ namespace Milestone.Views
 
             if (vm != null)
             {
-                var contextName = vm.Context.User.Login;
                 var repoName = vm.RepoName;
                 var issueNum = vm.Issue.Number.ToString();
-                NavigationService.Navigate(new Uri("/Views/NewCommentView.xaml?context=" + contextName + "&repo=" + repoName + "&issue=" + issueNum, UriKind.Relative));
+                NavigationService.Navigate(new Uri("/Views/NewCommentView.xaml?repoOwner=" + vm.Repo.Repository.Owner + "&repo=" + repoName + "&issue=" + issueNum, UriKind.Relative));
             }
         }
     }

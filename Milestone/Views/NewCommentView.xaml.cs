@@ -6,9 +6,9 @@ using Milestone.ViewModel;
 
 namespace Milestone.Views
 {
-    public partial class NewCommentView : PhoneApplicationPage, INotifyPropertyChanged
+    public partial class NewCommentView : INotifyPropertyChanged
     {
-        private string _contextName, _repoName;
+        private string _repoOwner, _repoName;
         private int _issueNumber;
 
         public bool IsBusy { get; set; }
@@ -24,7 +24,7 @@ namespace Milestone.Views
             if (string.IsNullOrWhiteSpace(comment))
                 return;
 
-            ViewModelLocator.Model.CreateComment(_contextName, _repoName, _issueNumber, comment,
+            ViewModelLocator.Model.CreateComment(_repoOwner, _repoName, _issueNumber, comment,
                 () =>
                 {
                     IsBusy = true;
@@ -47,7 +47,7 @@ namespace Milestone.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             string issueNum;
-            if (!NavigationContext.QueryString.TryGetValue("context", out _contextName))
+            if (!NavigationContext.QueryString.TryGetValue("repoOwner", out _repoOwner))
                 NavigationService.GoBack();
             if (!NavigationContext.QueryString.TryGetValue("repo", out _repoName))
                 NavigationService.GoBack();
