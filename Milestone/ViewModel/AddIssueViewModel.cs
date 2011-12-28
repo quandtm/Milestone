@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using Microsoft.Phone.Controls;
 using Milestone.Model;
@@ -11,6 +12,7 @@ namespace Milestone.ViewModel
     public class AddIssueViewModel : ViewModelBase
     {
         private readonly GitHubModel _model;
+        private readonly Dispatcher _dispatcher;
         public string Title { get; set; }
         public string Description { get; set; }
         private int _contextIndex = -1;
@@ -38,19 +40,27 @@ namespace Milestone.ViewModel
                 }
             }
         }
-        public AddIssueViewModel(GitHubModel model)
+        public AddIssueViewModel(GitHubModel model, Dispatcher dispatcher)
         {
             _model = model;
+            _dispatcher = dispatcher;
         }
 
         public void Submit()
         {
             IsBusy = true;
-            _model.UploadIssue(Repo, Title, Description, i =>
-                                                             {
-                                                                 IsBusy = false;
-                                                                 (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/Views/IssueList.xaml?context=" + _contextIndex + "&repo=" + Repo.Repository.Name.Replace(" ", "%20"), UriKind.Relative));
-                                                             });
+            _model.UploadIssue(Repo, Title, Description,
+                i =>
+                {
+                    IsBusy = false;
+                    _dispatcher.BeginInvoke(
+                        () =>
+                        {
+                            Repo.Issues.Add(i);
+                            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(
+                                    new Uri("/Views/IssueList.xaml?context=" +_contextIndex +"&repo=" +Repo.Repository.Name.Replace(" ","%20"),UriKind.Relative));
+                        });
+                });
         }
 
         protected bool IsBusy { get; set; }

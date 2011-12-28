@@ -24,19 +24,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,12">
-            <TextBlock Text="New Comment" Style="{StaticResource PhoneTextTitle2Style}"/>
-        </StackPanel>
+        <TextBlock Text="new comment" Style="{StaticResource PhoneTextTitle1Style}" Margin="12,0,24,0" VerticalAlignment="Top"/>
 
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBox x:Name="txtComment" Width="Auto" HorizontalAlignment="Stretch" Height="400" TextWrapping="Wrap" />
-        </Grid>
+        <TextBox x:Name="txtComment" Width="Auto" HorizontalAlignment="Stretch" Height="400" TextWrapping="Wrap" Margin="0,112,0,-112" />
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="post" Click="PostComment"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="cancel" Click="Cancel"/>
+            <shell:ApplicationBarIconButton IconUri="/icons/appbar.check.rest.png" Text="post" Click="PostComment"/>
+            <shell:ApplicationBarIconButton IconUri="/icons/appbar.close.rest.png" Text="cancel" Click="Cancel"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
