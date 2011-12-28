@@ -83,12 +83,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateToRelativeConverter.cs" />
     <Compile Include="Converters\GravatarIdToUriConverter.cs" />
     <Compile Include="Converters\OneOrMoreVisibleConverter.cs" />
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Extensions\NavigationExtensions.cs" />
-    <Compile Include="Messages\RebindMessage.cs" />
     <Compile Include="Model\GitHubModel.cs" />
     <Compile Include="Model\Repo.cs" />
     <Compile Include="Extensions\RepositoryExtensions.cs" />
@@ -169,7 +169,9 @@
     </Content>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Messages\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

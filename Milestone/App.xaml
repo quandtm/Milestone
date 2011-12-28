@@ -9,11 +9,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Milestone.ViewModel"
     xmlns:c4f="clr-namespace:Coding4Fun.Phone.Controls.Converters;assembly=Coding4Fun.Phone.Controls"
-    mc:Ignorable="d">
+    xmlns:Converters="clr-namespace:Milestone.Converters" mc:Ignorable="d">
     <!--Application Resources-->
     <Application.Resources>
         <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
-        <c4f:BooleanToVisibilityConverter x:Key="BoolToVisConv" />
+        <Converters:BooleanToVisibilityConverter x:Key="BoolToVisConv" />
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

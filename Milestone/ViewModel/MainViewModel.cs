@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using GalaSoft.MvvmLight;
 using Milestone.Model;
 
@@ -34,6 +35,7 @@ namespace Milestone.ViewModel
                         {
                             --_numBusy;
                             SetBusy();
+                            RaisePropertyChanged("SelectedContext");
                         });
         }
 

@@ -2,8 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
-using GalaSoft.MvvmLight.Messaging;
-using Milestone.Messages;
 using Milestone.Model;
 using Milestone.ViewModel;
 
@@ -19,6 +17,7 @@ namespace Milestone.Views
         public MainPage()
         {
             InitializeComponent();
+
             Loaded += MainPageLoaded;
         }
 
@@ -26,11 +25,16 @@ namespace Milestone.Views
         {
             //Inelegant solution to a stupid problem
             var cvs = Resources["cvsOwned"] as CollectionViewSource;
-            cvs.View.MoveCurrentToPosition(-1);
+            if (cvs.View != null)
+                cvs.View.MoveCurrentToPosition(-1);
+            lstMine.ItemsSource = null;
             lstMine.ItemsSource = cvs.View;
 
             var cvsWatched = Resources["cvsWatched"] as CollectionViewSource;
-            cvsWatched.View.MoveCurrentToPosition(-1);
+            if (cvsWatched.View != null)
+                cvsWatched.View.MoveCurrentToPosition(-1);
+
+            lstWatched.ItemsSource = null;
             lstWatched.ItemsSource = cvsWatched.View;
         }
 
@@ -78,6 +82,9 @@ namespace Milestone.Views
             if (repo == null)
                 return;
 
+            if (!repo.Repository.HasIssues)
+                return;
+
             // Reset the selection
             _ignoreRepoSelection = true;
             listbox.SelectedIndex = -1;
@@ -91,12 +98,12 @@ namespace Milestone.Views
             NavigationService.Navigate(new Uri("/Views/AboutView.xaml", UriKind.Relative));
         }
 
-        private void CvsOwnedFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        private void CvsOwnedFilter(object sender, FilterEventArgs e)
         {
             e.Accepted = (((Repo)e.Item).Type & RepoType.Owned) == RepoType.Owned;
         }
 
-        private void CvsWatchedFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        private void CvsWatchedFilter(object sender, FilterEventArgs e)
         {
             e.Accepted = (((Repo)e.Item).Type & RepoType.Watched) == RepoType.Watched;
         }

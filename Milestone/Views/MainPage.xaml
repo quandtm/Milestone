@@ -14,9 +14,10 @@
     >
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="RepoListDataTemplate">
-            <Grid Margin="0,0,0,12" DataContext="{Binding Repository}" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}}">
+            <StackPanel Margin="0,0,0,12" DataContext="{Binding Repository}">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"/>
-            </Grid>
+                <TextBlock Text="Issues disabled for this project" Visibility="{Binding HasIssues, Converter={StaticResource BoolToVisConv}, ConverterParameter=true}" />
+            </StackPanel>
         </DataTemplate>
         <CollectionViewSource x:Key="cvsOwned" Source="{Binding SelectedContext.Repositories}" Filter="CvsOwnedFilter" />
         <CollectionViewSource x:Key="cvsWatched" Source="{Binding SelectedContext.Repositories}" Filter="CvsWatchedFilter" />

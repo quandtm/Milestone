@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -8,9 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Threading;
-using GalaSoft.MvvmLight.Messaging;
 using Milestone.Extensions;
-using Milestone.Messages;
 using NGitHub;
 using NGitHub.Models;
 using NGitHub.Web;
@@ -61,26 +58,24 @@ namespace Milestone.Model
                         AuthenticatedUser = u;
                         _username = username;
                         _password = password;
-                        Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                Contexts.Clear();
-                                Contexts.Add(new Context() { User = u });
-                            }));
+                        Dispatcher.BeginInvoke(() =>
+                                                   {
+                                                       Contexts.Clear();
+                                                       Contexts.Add(new Context() { User = u });
+                                                   });
 
                         _client.Organizations.GetOrganizationsAsync(AuthenticatedUser.Login,
-                            new Action<IEnumerable<User>>(
-                                orgs => Dispatcher.BeginInvoke(() =>
-                                                                   {
-                                                                       foreach (var org in orgs)
-                                                                           Contexts.Add(new Context() { User = org });
-                                                                   })),
+                            orgs => Dispatcher.BeginInvoke(() =>
+                                                               {
+                                                                   foreach (var org in orgs)
+                                                                       Contexts.Add(new Context() { User = org });
+                                                               }),
                             _exceptionAction);
 
                         if (onComplete != null)
                             onComplete(IsAuthenticated);
                     }),
-                new Action<GitHubException>(
-                    ex =>
+                ex =>
                     {
                         if (ex.ErrorType == ErrorType.Unauthorized)
                         {
@@ -89,7 +84,7 @@ namespace Milestone.Model
                             if (onComplete != null)
                                 onComplete(IsAuthenticated);
                         }
-                    }));
+                    });
         }
 
         public void Logout()
@@ -135,19 +130,18 @@ namespace Milestone.Model
                                                         {
                                                             foreach (var repo in repos)
                                                             {
-                                                                var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.Name == repo.Name);
+                                                                var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.FullName == repo.FullName);
                                                                 if (newRepo == null)
                                                                 {
                                                                     newRepo = new Repo(repo);
+                                                                    newRepo.Type |= RepoType.Owned;
                                                                     context.Repositories.Add(newRepo);
                                                                 }
                                                                 else
-                                                                {
                                                                     newRepo.Repository = repo;
-                                                                }
                                                                 newRepo.Type |= RepoType.Owned;
+                                                                
                                                             }
-                                                            Messenger.Default.Send<RebindMessage>(new RebindMessage());
                                                             if (onComplete != null)
                                                                 onComplete();
                                                         }), _exceptionAction);
@@ -157,19 +151,17 @@ namespace Milestone.Model
                                                     {
                                                         foreach (var repo in repos)
                                                         {
-                                                            var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.Name == repo.Name);
+                                                            var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.FullName == repo.FullName);
                                                             if (newRepo == null)
                                                             {
                                                                 newRepo = new Repo(repo);
+                                                                newRepo.Type |= RepoType.Watched;
                                                                 context.Repositories.Add(newRepo);
                                                             }
                                                             else
-                                                            {
                                                                 newRepo.Repository = repo;
-                                                            }
-                                                            newRepo.Type |= RepoType.Watched;
+                                                            
                                                         }
-                                                        Messenger.Default.Send<RebindMessage>(new RebindMessage());
                                                         if (onComplete != null)
                                                             onComplete();
                                                     }), _exceptionAction);
