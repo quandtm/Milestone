@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using NGitHub.Models;
 
@@ -6,7 +7,7 @@ namespace Milestone.Extensions
 {
     public static class IssueExtensions
     {
-        public static void Save(this Issue issue, BinaryWriter writer)
+        public static void Save(this Issue issue, BinaryWriter writer, ref ObservableCollection<Comment> comments)
         {
             writer.Write(issue.Title);
             writer.Write(issue.Body);
@@ -22,10 +23,28 @@ namespace Milestone.Extensions
             }
             writer.Write(issue.GravatarId ?? "");
             writer.Write(issue.State);
-            writer.Write(issue.Comments);
+            if (comments == null)
+            {
+                writer.Write(0);
+            }
+            else
+            {
+                writer.Write(comments.Count);
+                for (int i = 0; i < comments.Count; i++)
+                {
+                    var c = comments[i];
+                    writer.Write(c.Body ?? "");
+                    writer.Write(c.Id);
+                    writer.Write(c.GravatarId ?? "");
+                    writer.Write(c.User ?? "");
+                    writer.Write(c.Url ?? "");
+                    writer.Write(c.CreatedAt.ToString());
+                    writer.Write(c.UpdatedAt.ToString());
+                }
+            }
         }
 
-        public static void Load(this Issue issue, BinaryReader reader, int fileVersion)
+        public static void Load(this Issue issue, BinaryReader reader, int fileVersion, ref ObservableCollection<Comment> comments)
         {
             issue.Title = reader.ReadString();
             issue.Body = reader.ReadString();
@@ -46,7 +65,21 @@ namespace Milestone.Extensions
             }
             issue.GravatarId = reader.ReadString();
             issue.State = reader.ReadString();
-            issue.Comments = reader.ReadInt32();
+            int numComments = reader.ReadInt32();
+            issue.Comments = numComments;
+            comments.Clear();
+            for (int i = 0; i < numComments; i++)
+            {
+                var c = new Comment();
+                c.Body = reader.ReadString();
+                c.Id = reader.ReadInt32();
+                c.GravatarId = reader.ReadString();
+                c.User = reader.ReadString();
+                c.Url = reader.ReadString();
+                c.CreatedAt = DateTime.Parse(reader.ReadString());
+                c.UpdatedAt = DateTime.Parse(reader.ReadString());
+                comments.Add(c);
+            }
         }
     }
 }

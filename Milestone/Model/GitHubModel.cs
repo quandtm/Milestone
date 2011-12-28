@@ -298,9 +298,9 @@ namespace Milestone.Model
                     br.Close();
                 }
             }
-            catch (EndOfStreamException ex)
+            catch (EndOfStreamException)
             {
-                //TODO: Delete file
+                iso.DeleteFile(RepoFilename);
             }
         }
 
@@ -308,31 +308,38 @@ namespace Milestone.Model
         {
             if (isoStore.FileExists(AuthFilename))
             {
-                using (var stream = isoStore.OpenFile(AuthFilename, FileMode.Open, FileAccess.Read))
-                using (var br = new BinaryReader(stream))
+                try
                 {
-                    var fileVer = br.ReadInt32();
-                    var unameLen = br.ReadInt32();
-                    var unameEncrypted = br.ReadBytes(unameLen);
-                    var pwordLen = br.ReadInt32();
-                    var pwordEncrypted = br.ReadBytes(pwordLen);
-                    var unamePlain = ProtectedData.Unprotect(unameEncrypted, null);
-                    var pwordPlain = ProtectedData.Unprotect(pwordEncrypted, null);
-                    _username = System.Text.Encoding.UTF8.GetString(unamePlain, 0, unamePlain.Length);
-                    _password = System.Text.Encoding.UTF8.GetString(pwordPlain, 0, pwordPlain.Length);
-                    IsAuthenticated = true;
-
-                    var numContexts = br.ReadInt32();
-                    Contexts.Clear();
-                    for (int i = 0; i < numContexts; i++)
+                    using (var stream = isoStore.OpenFile(AuthFilename, FileMode.Open, FileAccess.Read))
+                    using (var br = new BinaryReader(stream))
                     {
-                        var usr = new User();
-                        usr.Load(br, fileVer);
-                        Contexts.Add(new Context() { User = usr });
-                    }
-                    AuthenticatedUser = Contexts[0].User;
+                        var fileVer = br.ReadInt32();
+                        var unameLen = br.ReadInt32();
+                        var unameEncrypted = br.ReadBytes(unameLen);
+                        var pwordLen = br.ReadInt32();
+                        var pwordEncrypted = br.ReadBytes(pwordLen);
+                        var unamePlain = ProtectedData.Unprotect(unameEncrypted, null);
+                        var pwordPlain = ProtectedData.Unprotect(pwordEncrypted, null);
+                        _username = System.Text.Encoding.UTF8.GetString(unamePlain, 0, unamePlain.Length);
+                        _password = System.Text.Encoding.UTF8.GetString(pwordPlain, 0, pwordPlain.Length);
+                        IsAuthenticated = true;
 
-                    br.Close();
+                        var numContexts = br.ReadInt32();
+                        Contexts.Clear();
+                        for (int i = 0; i < numContexts; i++)
+                        {
+                            var usr = new User();
+                            usr.Load(br, fileVer);
+                            Contexts.Add(new Context() { User = usr });
+                        }
+                        AuthenticatedUser = Contexts[0].User;
+
+                        br.Close();
+                    }
+                }
+                catch (EndOfStreamException)
+                {
+                    isoStore.DeleteFile(AuthFilename);
                 }
             }
             else

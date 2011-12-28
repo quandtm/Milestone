@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using Milestone.Model;
 using NGitHub.Models;
 
@@ -14,7 +15,11 @@ namespace Milestone.Extensions
             writer.Write(repo.Repository.Owner);
             writer.Write(repo.Issues.Count);
             for (int i = 0; i < repo.Issues.Count; i++)
-                repo.Issues[i].Save(writer);
+            {
+                ObservableCollection<Comment> comments = null;
+                repo.IssueComments.TryGetValue(repo.Issues[i], out comments);
+                repo.Issues[i].Save(writer, ref comments);
+            }
         }
 
         public static void Load(this Repo repo, BinaryReader reader, int fileVersion)
@@ -27,16 +32,12 @@ namespace Milestone.Extensions
             var numIssues = reader.ReadInt32();
             for (int i = 0; i < numIssues; i++)
             {
-                try
-                {
-                    var issue = new Issue();
-                    issue.Load(reader, fileVersion);
-                    repo.Issues.Add(issue);
-                }
-                catch (EndOfStreamException ex)
-                {
-                    
-                }
+                var issue = new Issue();
+                var oc = new ObservableCollection<Comment>();
+                issue.Load(reader, fileVersion, ref oc);
+                repo.Issues.Add(issue);
+                repo.IssueComments.Add(issue, oc);
+
             }
         }
     }
