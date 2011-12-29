@@ -145,10 +145,8 @@ namespace Milestone.Model
                                                                     context.Repositories.Add(newRepo);
                                                                 }
                                                                 else
-                                                                {
                                                                     newRepo.Repository = repo;
-                                                                    newRepo.Type |= RepoType.Owned;
-                                                                }
+                                                                newRepo.Type |= RepoType.Owned;
                                                             }
                                                             if (onComplete != null)
                                                                 onComplete();
@@ -169,10 +167,8 @@ namespace Milestone.Model
                                                                 context.Repositories.Add(newRepo);
                                                             }
                                                             else
-                                                            {
                                                                 newRepo.Repository = repo;
-                                                                newRepo.Type |= RepoType.Watched;
-                                                            }
+                                                            newRepo.Type |= RepoType.Watched;
                                                         }
                                                         if (onComplete != null)
                                                             onComplete();
@@ -291,6 +287,8 @@ namespace Milestone.Model
                 foreach (var context in Contexts)
                 {
                     bw.Write(context.User.Login);
+                    // Detect repos that are watched/owned so we only save those out (and forget the others in the process)
+                    // This handles changes to repo watched status
                     int numRepos = 0;
                     foreach (var repo in context.Repositories)
                     {
