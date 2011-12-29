@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
-    xmlns:Converters="clr-namespace:Milestone.Converters" x:Class="Milestone.Views.IssueList"
+    xmlns:Converters="clr-namespace:Milestone.Converters"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=System.Windows" x:Class="Milestone.Views.IssueList"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -18,8 +19,16 @@
     <phone:PhoneApplicationPage.Resources>
         <Converters:DateToRelativeConverter x:Key="DateToRelativeConverter" />
         <Converters:OneOrMoreVisibleConverter x:Key="OneOrMoreVisibleConverter" />
-        <CollectionViewSource x:Key="cvsOpen" Source="{Binding Repo.Issues}" Filter="CvsOpenFilter" />
-        <CollectionViewSource x:Key="cvsClosed" Source="{Binding Repo.Issues}" Filter="CvsClosedFilter" />
+        <CollectionViewSource x:Key="cvsOpen" Source="{Binding Repo.Issues}" Filter="CvsOpenFilter" >
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Number" Direction="Descending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="cvsClosed" Source="{Binding Repo.Issues}" Filter="CvsClosedFilter" >
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Number" Direction="Descending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
         <DataTemplate x:Key="IssueTemplate">
             <StackPanel Margin="0,0,0,24">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Title}" FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
