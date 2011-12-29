@@ -1,0 +1,55 @@
+---
+
+---
+
+#phone 
+{
+	background:transparent url(img/phonelayouts/{{ site.phone }}.png) no-repeat;
+	
+	{% case site.phone %}
+	{% when 'emulator' %}
+		width:305px;
+		height:555px;
+		
+	{% when 'lumia800blue' or 'lumia800white' %}
+		width:320px;
+		height:583px;
+		
+	{% when 'focuss' %}
+		width:296px;
+		height:541px;
+		
+	{% when 'lumia710blackblue' or 'lumia710blackyellow' or 'lumia710whiteblack' or 'lumia710whiteblue' or 'lumia710whitepink' %}
+		width:316px;
+		height:594px;
+		
+	{% when 'radar' %}
+		width:301px;
+		height:586px;
+		
+	{% when 'titan' %}
+		width:289px;
+		height:525px;
+	{% endcase %}
+}
+#container { width: 900px; margin-left:auto; margin-right:auto; }
+#screens { padding-top:75px;}
+#slider { 
+
+	margin-left:45px;
+}
+#slider ul, #slider li 
+{
+	margin: 0px 0px;
+	height: 400px;
+	width: 240px;
+	padding:0;
+	list-style:none;
+}
+#features, #phone { float:left;}
+#clear { clear:both; }
+h1,h2,h3 { font-family: Segoe UI Light, Segoe WP Light, Segoe UI, sans-serif; line-height:0;}
+h1 { font-size: 4em; }
+h2 { font-size: 3em; }
+h3 { font-size: 2.5em; }
+

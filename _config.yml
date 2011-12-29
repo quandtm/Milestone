@@ -1,0 +1,18 @@
+permalink: /:title.html
+auto: true
+markdown: rdiscount
+title: YourAppName
+appId : 123456
+phone: lumia800blue
+#valid options
+#	emulator
+#	focuss (Samsung Focus S)
+#	lumia710blackblue (Nokia Lumia 710, Black base with Blue Accents)
+#	lumia710blackyellow (Nokia Lumia 710, Black base with Yellow Accents)
+#	lumia710whiteblack (Nokia Lumia 710, White base with Black Accents)
+#	lumia710whiteblue (Nokia Lumia 710, White base with Blue Accents)
+#	lumia710whitepink (Nokia Lumia 710, White base with Pink Accents)
+#	lumia800blue (Nokia Lumia 800, Blue Accents)
+#	lumia800pink (Nokia Lumia 800, Pink Accents)
+#	radar (HTC Radar)
+#	titan (HTC Titan)
