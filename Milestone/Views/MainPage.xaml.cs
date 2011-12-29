@@ -12,12 +12,23 @@ namespace Milestone.Views
         private MainViewModel _vm;
         private bool _ignoreRepoSelection = false;
         private int _contextIndex;
-
+        private Action _refreshAction;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-
+            _refreshAction = () =>
+                                {
+                                    Dispatcher.BeginInvoke(() =>
+                                                               {
+                                                                   var cvs =
+                                                                       Resources["cvsOwned"] as
+                                                                       CollectionViewSource;
+                                                                   var cvsWatched = Resources["cvsWatched"] as CollectionViewSource;
+                                                                   cvs.View.Refresh();
+                                                                   cvsWatched.View.Refresh();
+                                                               });
+                                };
             Loaded += MainPageLoaded;
         }
 
@@ -66,7 +77,7 @@ namespace Milestone.Views
 
             _vm.SelectedContext = _vm.Model.Contexts[contextSelector.SelectedIndex];
             _contextIndex = contextSelector.SelectedIndex;
-            _vm.Refresh();
+            _vm.Refresh(_refreshAction);
         }
 
         private void SelectRepo(object sender, SelectionChangedEventArgs e)
@@ -110,7 +121,7 @@ namespace Milestone.Views
 
         private void Refresh(object sender, EventArgs e)
         {
-            _vm.Refresh();
+            _vm.Refresh(_refreshAction);
         }
     }
 }

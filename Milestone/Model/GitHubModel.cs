@@ -128,13 +128,13 @@ namespace Milestone.Model
                 onStart();
                 onStart();
             }
-
-            foreach (var repo in context.Repositories)
-                repo.Type = RepoType.None;
-
+            
             _client.Users.GetRepositoriesAsync(context.User.Login,
                     repos => Dispatcher.BeginInvoke(() =>
                                                         {
+                                                            foreach (var repo in context.Repositories.Where(r => (r.Type & RepoType.Owned) == RepoType.Owned))
+                                                                repo.Type ^= RepoType.Owned;
+
                                                             foreach (var repo in repos)
                                                             {
                                                                 var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.FullName == repo.FullName);
@@ -157,6 +157,8 @@ namespace Milestone.Model
             _client.Users.GetWatchedRepositoriesAsync(context.User.Login,
                 repos => Dispatcher.BeginInvoke(() =>
                                                     {
+                                                        foreach (var repo in context.Repositories.Where(r => (r.Type & RepoType.Watched) == RepoType.Watched))
+                                                            repo.Type ^= RepoType.Watched;
                                                         foreach (var repo in repos)
                                                         {
                                                             var newRepo = context.Repositories.FirstOrDefault(r => r.Repository.FullName == repo.FullName);
