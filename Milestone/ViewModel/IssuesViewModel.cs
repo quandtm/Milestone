@@ -38,20 +38,24 @@ namespace Milestone.ViewModel
                 if (Context != null)
                 {
                     Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-
-                    _model.DownloadIssues(Context, Repo,
-                        () => // onStart
-                        {
-                            ++_numBusy;
-                            SetBusy();
-                        },
-                        () => // onComplete
-                        {
-                            --_numBusy;
-                            SetBusy();
-                        });
+                    RefreshIssues();
                 }
             }
+        }
+
+        public void RefreshIssues()
+        {
+            _model.DownloadIssues(Context, Repo,
+                () => // onStart
+                {
+                    ++_numBusy;
+                    SetBusy();
+                },
+                () => // onComplete
+                {
+                    --_numBusy;
+                    SetBusy();
+                });
         }
 
 

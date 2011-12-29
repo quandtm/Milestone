@@ -82,5 +82,10 @@ namespace Milestone.Views
         {
             NavigationService.Navigate(new Uri("/Views/AddIssueView.xaml?repo=" + ViewModel.RepoName + "&context=" + ViewModel.ContextIndex, UriKind.Relative));
         }
+
+        private void RefreshIssues(object sender, EventArgs e)
+        {
+            ViewModel.RefreshIssues();
+        }
     }
 }
