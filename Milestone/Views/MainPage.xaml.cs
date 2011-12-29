@@ -107,5 +107,10 @@ namespace Milestone.Views
         {
             e.Accepted = (((Repo)e.Item).Type & RepoType.Watched) == RepoType.Watched;
         }
+
+        private void Refresh(object sender, EventArgs e)
+        {
+            _vm.Refresh();
+        }
     }
 }

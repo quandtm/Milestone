@@ -129,6 +129,9 @@ namespace Milestone.Model
                 onStart();
             }
 
+            foreach (var repo in context.Repositories)
+                repo.Type = RepoType.None;
+
             _client.Users.GetRepositoriesAsync(context.User.Login,
                     repos => Dispatcher.BeginInvoke(() =>
                                                         {
@@ -142,9 +145,10 @@ namespace Milestone.Model
                                                                     context.Repositories.Add(newRepo);
                                                                 }
                                                                 else
+                                                                {
                                                                     newRepo.Repository = repo;
-                                                                newRepo.Type |= RepoType.Owned;
-
+                                                                    newRepo.Type |= RepoType.Owned;
+                                                                }
                                                             }
                                                             if (onComplete != null)
                                                                 onComplete();
@@ -163,8 +167,10 @@ namespace Milestone.Model
                                                                 context.Repositories.Add(newRepo);
                                                             }
                                                             else
+                                                            {
                                                                 newRepo.Repository = repo;
-
+                                                                newRepo.Type |= RepoType.Watched;
+                                                            }
                                                         }
                                                         if (onComplete != null)
                                                             onComplete();
@@ -283,9 +289,18 @@ namespace Milestone.Model
                 foreach (var context in Contexts)
                 {
                     bw.Write(context.User.Login);
-                    bw.Write(context.Repositories.Count);
+                    int numRepos = 0;
+                    foreach (var repo in context.Repositories)
+                    {
+                        if (repo.Type != RepoType.None)
+                            ++numRepos;
+                    }
+                    bw.Write(numRepos);
                     for (int i = 0; i < context.Repositories.Count; i++)
-                        context.Repositories[i].Save(bw);
+                    {
+                        if (context.Repositories[i].Type != RepoType.None)
+                            context.Repositories[i].Save(bw);
+                    }
                 }
 
                 bw.Close();
