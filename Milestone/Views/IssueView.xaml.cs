@@ -18,7 +18,6 @@ namespace Milestone.Views
             var repoName = NavigationContext.TryGetStringKey("repo");
             var issueId = NavigationContext.TryGetKey("id");
 
-
             var vm = (DataContext as IssueDetailsViewModel);
             if (vm != null && contextIndex.HasValue && issueId.HasValue)
             {
@@ -40,6 +39,13 @@ namespace Milestone.Views
                 var issueNum = vm.Issue.Number.ToString();
                 NavigationService.Navigate(new Uri("/Views/NewCommentView.xaml?repoOwner=" + vm.Repo.Repository.Owner + "&repo=" + repoName + "&issue=" + issueNum, UriKind.Relative));
             }
+        }
+
+        private void RefreshComments(object sender, EventArgs e)
+        {
+            var vm = (DataContext as IssueDetailsViewModel);
+            if (vm != null)
+                vm.RefreshComments();
         }
     }
 }

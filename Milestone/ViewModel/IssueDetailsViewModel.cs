@@ -29,15 +29,11 @@ namespace Milestone.ViewModel
             get { return _repoName; }
             set
             {
+                if (value == null) return;
                 _repoName = value;
                 if (Context == null) return;
                 Repo = Context.Repositories.FirstOrDefault(r => r.Repository.Name == RepoName);
-                IsBusy = true;
-                _model.DownloadIssueComments(Context, Repo, Issue, r =>
-                                                                       {
-                                                                           IsBusy = false;
-                                                                           RaisePropertyChanged("Comments");
-                                                                       });
+                RefreshComments();
             }
         }
 
@@ -55,6 +51,16 @@ namespace Milestone.ViewModel
             {
                 return Repo.Issues.FirstOrDefault(i => i.Number == Id);
             }
+        }
+
+        public void RefreshComments()
+        {
+            IsBusy = true;
+            _model.DownloadIssueComments(Context, Repo, Issue, r =>
+            {
+                IsBusy = false;
+                RaisePropertyChanged("Comments");
+            });
         }
 
         public IssueDetailsViewModel(GitHubModel model)

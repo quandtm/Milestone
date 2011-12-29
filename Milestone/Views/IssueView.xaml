@@ -20,7 +20,7 @@
 	<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar>
             <shell:ApplicationBarIconButton x:Name="btnComment" IconUri="/icons/appbar.edit.rest.png" Text="comment" Click="PostComment"/>
-            <shell:ApplicationBarIconButton x:Name="btnRefresh" IconUri="/icons/appbar.refresh.rest.png" IsEnabled="True" Text="refresh"/>
+            <shell:ApplicationBarIconButton x:Name="btnRefresh" IconUri="/icons/appbar.refresh.rest.png" IsEnabled="True" Text="refresh" Click="RefreshComments"/>
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
     <shell:SystemTray.ProgressIndicator>

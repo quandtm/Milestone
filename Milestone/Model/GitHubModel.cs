@@ -110,7 +110,6 @@ namespace Milestone.Model
 
         public void RefreshAllRepos(Action onStart, Action onComplete)
         {
-            // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
                 return;
 
@@ -120,7 +119,6 @@ namespace Milestone.Model
 
         public void RefreshContextRepos(Context context, Action onStart, Action onComplete)
         {
-            // TODO: Global progress bar
             if (!IsAuthenticated || Dispatcher == null)
                 return;
 
