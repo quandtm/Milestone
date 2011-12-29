@@ -50,7 +50,8 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton IconUri="/icons/appbar.add.rest.png" Text="add" Click="AddIssue"/>
+                <shell:ApplicationBarIconButton x:Name="btnAddIssue" IconUri="/icons/appbar.add.rest.png" Text="add" Click="AddIssue"/>
+                <shell:ApplicationBarIconButton x:Name="btnRefresh" IconUri="/icons/appbar.refresh.rest.png" IsEnabled="True" Text="refresh"/>
             </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

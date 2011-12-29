@@ -24,9 +24,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="new comment" Style="{StaticResource PhoneTextTitle1Style}" Margin="12,0,24,0" VerticalAlignment="Top"/>
+        <TextBlock Text="new comment" Style="{StaticResource PhoneTextTitle1Style}" Margin="12,0,12,12"/>
 
-        <TextBox x:Name="txtComment" Width="Auto" HorizontalAlignment="Stretch" Height="400" TextWrapping="Wrap" Margin="0,112,0,-112" />
+        <TextBox x:Name="txtComment" Width="Auto" HorizontalAlignment="Stretch" TextWrapping="Wrap" Grid.Row="1" Height="450" VerticalAlignment="Top" Margin="12,0" />
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

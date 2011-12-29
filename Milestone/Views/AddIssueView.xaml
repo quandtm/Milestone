@@ -30,17 +30,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="{Binding RepoName}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="new issue" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock x:Name="PageTitle" Text="new issue" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <TextBlock Text="Title" />
-            <TextBox x:Name="txtTitle" Text="{Binding Title, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="-12,0"/>
+            <TextBox x:Name="txtTitle" Text="{Binding Title, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="12,0"/>
 
             <TextBlock Text="Details" Margin="0,24,0,0" />
-            <TextBox x:Name="txtBody" Text="{Binding Description, Mode=TwoWay}" TextWrapping="Wrap" Margin="-12,0" Height="293"/>
+            <TextBox x:Name="txtBody" Text="{Binding Description, Mode=TwoWay}" TextWrapping="Wrap" Margin="12,0" Height="293"/>
         </StackPanel>
     </Grid>
 </phone:PhoneApplicationPage>

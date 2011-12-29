@@ -28,14 +28,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,12">
-            <TextBlock x:Name="PageTitle" Text="Milestone" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock x:Name="PageTitle" Text="login" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
-        <StackPanel x:Name="ContentPanel" Grid.RowSpan="2" d:LayoutOverrides="Width, Height" Grid.Row="1" Margin="12,0,0,0" >
+        <StackPanel x:Name="ContentPanel" Grid.RowSpan="2" d:LayoutOverrides="Width, Height" Grid.Row="1" Margin="12,0" >
         	<TextBlock TextWrapping="Wrap" Text="Username" Style="{StaticResource PhoneTextNormalStyle}"/>
-        	<TextBox x:Name="txtUsername" TextWrapping="Wrap" Margin="0"/>
+        	<TextBox x:Name="txtUsername" TextWrapping="Wrap" Margin="12,0"/>
         	<TextBlock TextWrapping="Wrap" Text="Password" Style="{StaticResource PhoneTextNormalStyle}"/>
-        	<PasswordBox x:Name="txtPassword" Margin="0"/>
+        	<PasswordBox x:Name="txtPassword" Margin="12,0"/>
         </StackPanel>
 
     </Grid>
