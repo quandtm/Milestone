@@ -187,8 +187,10 @@ namespace Milestone.Model
                                                      {
                                                          foreach (var i in issues)
                                                          {
-                                                             if (r.Issues.FirstOrDefault(iss => iss.Number == i.Number) == null)
-                                                                 r.Issues.Add(i);
+                                                             var oldIssue = r.Issues.FirstOrDefault(iss => iss.Number == i.Number);
+                                                             if (oldIssue != null)
+                                                                 r.Issues.Remove(oldIssue);
+                                                             r.Issues.Add(i);
                                                          }
                                                          if (onComplete != null)
                                                              onComplete();
@@ -201,8 +203,10 @@ namespace Milestone.Model
                                                     {
                                                         foreach (var i in issues)
                                                         {
-                                                            if (r.Issues.FirstOrDefault(iss => iss.Number == i.Number) == null)
-                                                                r.Issues.Add(i);
+                                                            var oldIssue = r.Issues.FirstOrDefault(iss => iss.Number == i.Number);
+                                                            if (oldIssue != null)
+                                                                r.Issues.Remove(oldIssue);
+                                                            r.Issues.Add(i);
                                                         }
                                                         if (onComplete != null)
                                                             onComplete();

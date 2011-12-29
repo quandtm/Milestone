@@ -40,6 +40,7 @@ namespace Milestone.ViewModel
                 }
             }
         }
+
         public AddIssueViewModel(GitHubModel model, Dispatcher dispatcher)
         {
             _model = model;
@@ -57,8 +58,9 @@ namespace Milestone.ViewModel
                         () =>
                         {
                             Repo.Issues.Add(i);
-                            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(
-                                    new Uri("/Views/IssueList.xaml?context=" +_contextIndex +"&repo=" +Repo.Repository.Name.Replace(" ","%20"),UriKind.Relative));
+                            (Application.Current.RootVisual as PhoneApplicationFrame).GoBack();
+                            //(Application.Current.RootVisual as PhoneApplicationFrame).Navigate(
+                            //        new Uri("/Views/IssueList.xaml?context=" +_contextIndex +"&repo=" +Repo.Repository.Name.Replace(" ","%20"),UriKind.Relative));
                         });
                 });
         }
