@@ -2,8 +2,11 @@ permalink: /:title.html
 auto: true
 markdown: rdiscount
 title: YourAppName
+accent: 2d88c9
+twitter: mahapps
+facebook: mahapps
 appId : 123456
-phone: lumia800blue
+phone: lumia710whiteblue #lumia800blue
 #valid options
 #	emulator
 #	focuss (Samsung Focus S)
@@ -13,6 +16,7 @@ phone: lumia800blue
 #	lumia710whiteblue (Nokia Lumia 710, White base with Blue Accents)
 #	lumia710whitepink (Nokia Lumia 710, White base with Pink Accents)
 #	lumia800blue (Nokia Lumia 800, Blue Accents)
+#	lumia800black (Nokia Lumia 800, Black Accents)
 #	lumia800pink (Nokia Lumia 800, Pink Accents)
 #	radar (HTC Radar)
 #	titan (HTC Titan)

@@ -1,43 +1,13 @@
 ---
 
 ---
-
-#phone 
-{
-	background:transparent url(img/phonelayouts/{{ site.phone }}.png) no-repeat;
-	
-	{% case site.phone %}
-	{% when 'emulator' %}
-		width:305px;
-		height:555px;
-		
-	{% when 'lumia800blue' or 'lumia800white' %}
-		width:320px;
-		height:583px;
-		
-	{% when 'focuss' %}
-		width:296px;
-		height:541px;
-		
-	{% when 'lumia710blackblue' or 'lumia710blackyellow' or 'lumia710whiteblack' or 'lumia710whiteblue' or 'lumia710whitepink' %}
-		width:316px;
-		height:594px;
-		
-	{% when 'radar' %}
-		width:301px;
-		height:586px;
-		
-	{% when 'titan' %}
-		width:289px;
-		height:525px;
-	{% endcase %}
-}
-#container { width: 900px; margin-left:auto; margin-right:auto; }
+h1,h2,h3 { font-family: Segoe UI Light, Segoe WP Light, Segoe UI, sans-serif; font-weight:lighter; line-height:0em; color: #{{ site.accent }}; }
+h1 { font-size: 4em; }
+h2 { font-size: 3em; }
+h3 { font-size: 2.5em; }
+ul, li { padding-left:0; list-style:none;}
 #screens { padding-top:75px;}
-#slider { 
-
-	margin-left:45px;
-}
+#slider {  margin-left:45px; }
 #slider ul, #slider li 
 {
 	margin: 0px 0px;
@@ -46,10 +16,57 @@
 	padding:0;
 	list-style:none;
 }
-#features, #phone { float:left;}
+
+#phone 
+{
+	margin-top:15px;
+	background:transparent url(img/phonelayouts/{{ site.phone }}.png) no-repeat;
+	
+	{% case site.phone %}
+	{% when 'emulator' %}
+		width:305px;
+		height:560px;
+			}
+	#screens { padding-top:54px;}
+	#slider { margin-left:30px; 
+		
+	{% when 'lumia800blue' or 'lumia800black' or 'lumia800pink' %}
+		width:320px;
+		height:583px;
+		
+	{% when 'focuss' %}
+		width:296px;
+		height:550px;
+	}
+	#screens { padding-top:65px;}
+	#slider { margin-left:27px; 
+		
+	{% when 'lumia710blackblue' or 'lumia710blackyellow' or 'lumia710whiteblack' or 'lumia710whiteblue' or 'lumia710whitepink' %}
+		width:316px;
+		height:600px;}
+	#screens { padding-top:90px;}
+	#slider { margin-left:40px; 
+		
+	{% when 'radar' %}
+		width:310px;
+		height:590px;
+		}
+	#screens { padding-top:70px;}
+	#slider { margin-left:35px; 
+	{% when 'titan' %}
+		width:295px;
+		height:530px;
+	}
+	#screens { padding-top:58px;}
+	#slider { margin-left:28px; 
+	{% endcase %}
+}
+
+#container { max-width: 1000px; margin-left:auto; margin-right:auto; }
+#content, #phone, #tweets { float:left;}
+#content { margin-left: 25px; max-width:650px; margin-top:75px;}
 #clear { clear:both; }
-h1,h2,h3 { font-family: Segoe UI Light, Segoe WP Light, Segoe UI, sans-serif; line-height:0;}
-h1 { font-size: 4em; }
-h2 { font-size: 3em; }
-h3 { font-size: 2.5em; }
+#tweets { width: 250px; }
+#tweets .tweet_list li { margin-bottom: 20px;} 
+#tweets span.tweet_time { display: block; text-align:right; margin-top:5px;}
 

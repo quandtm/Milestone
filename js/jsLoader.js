@@ -4,3 +4,4 @@ function require(jspath) {
 
 require("https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js");
 require("js/plugins/easySlider1.7.min.js");
+require("js/plugins/jquery.tweet.min.js");
