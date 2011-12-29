@@ -21,7 +21,7 @@
 
 
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Loading..." />
+        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="{Binding IsBusy}" Text="Creating Issue..." />
     </shell:SystemTray.ProgressIndicator>
 
     <Grid x:Name="LayoutRoot" Background="Transparent">

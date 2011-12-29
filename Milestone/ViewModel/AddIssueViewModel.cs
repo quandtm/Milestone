@@ -41,6 +41,8 @@ namespace Milestone.ViewModel
             }
         }
 
+        public bool IsBusy { get; set; }
+
         public AddIssueViewModel(GitHubModel model, Dispatcher dispatcher)
         {
             _model = model;
@@ -53,10 +55,10 @@ namespace Milestone.ViewModel
             _model.UploadIssue(Repo, Title, Description,
                 i =>
                 {
-                    IsBusy = false;
                     _dispatcher.BeginInvoke(
                         () =>
                         {
+                            IsBusy = false;
                             Repo.Issues.Add(i);
                             (Application.Current.RootVisual as PhoneApplicationFrame).GoBack();
                             //(Application.Current.RootVisual as PhoneApplicationFrame).Navigate(
@@ -64,7 +66,5 @@ namespace Milestone.ViewModel
                         });
                 });
         }
-
-        protected bool IsBusy { get; set; }
     }
 }
