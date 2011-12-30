@@ -3,8 +3,7 @@ auto: true
 markdown: rdiscount
 title: Milestone
 accent: 2d88c9
-twitter: quandtm
-facebook: quandtm
+twitter: axialgames
 appId : 123456
 phone: lumia710whiteblue #lumia800blue
 description: Milestone is an app designed to let you easily view your Github repositories and interact with others, wherever you are. Milestone lets you view the Issues in your repository, and add new ones or comment on existing ones.
