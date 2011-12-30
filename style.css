@@ -22,7 +22,7 @@ h2 { font-size: 3em; }
 h3 { font-size: 2.5em; }
 ul { list-style:none; padding:0;}
 li { background:transparent url(img/listcircle.png) no-repeat; padding-left:30px; padding-bottom:15px;}
-a img { border :none;}
+a img { border :none; width:240px; height:400px;}
 #tweets ul { list-style:none; padding:0;}
 #tweets li {background:none; padding:0;}
 #screens { padding-top:75px;}
