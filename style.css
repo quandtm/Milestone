@@ -1,11 +1,30 @@
 ---
 
 ---
+body {
+margin:0; padding:0;
+background: -moz-linear-gradient(top,  rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.1) 1%, rgba(255,255,255,0.1) 51%, rgba(255,255,255,0.1) 52%, rgba(255,255,255,0.1) 57%, rgba(255,255,255,0.1) 100%)repeat-x; /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.1)), color-stop(1%,rgba(0,0,0,0.1)), color-stop(51%,rgba(255,255,255,0.1)), color-stop(52%,rgba(255,255,255,0.1)), color-stop(57%,rgba(255,255,255,0.1)), color-stop(100%,rgba(255,255,255,0.1))) repeat-x; /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 1%,rgba(255,255,255,0.1) 51%,rgba(255,255,255,0.1) 52%,rgba(255,255,255,0.1) 57%,rgba(255,255,255,0.1) 100%) repeat-x; /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 1%,rgba(255,255,255,0.1) 51%,rgba(255,255,255,0.1) 52%,rgba(255,255,255,0.1) 57%,rgba(255,255,255,0.1) 100%) repeat-x; /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 1%,rgba(255,255,255,0.1) 51%,rgba(255,255,255,0.1) 52%,rgba(255,255,255,0.1) 57%,rgba(255,255,255,0.1) 100%) repeat-x; /* IE10+ */
+background: linear-gradient(top,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 1%,rgba(255,255,255,0.1) 51%,rgba(255,255,255,0.1) 52%,rgba(255,255,255,0.1) 57%,rgba(255,255,255,0.1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a000000', endColorstr='#1affffff',GradientType=0 ); /* IE6-9 */
+-webkit-font-smoothing: antialiased;
+-webkit-text-size-adjust: 100%;
+font-family: Segoe UI, Segoe WP, sans-serif;
+}
+a, a:visited { color: #{{ site.accent }}; text-decoration:none;}
+a:hover { background: #{{ site.accent }}; color:white;}
 h1,h2,h3 { font-family: Segoe UI Light, Segoe WP Light, Segoe UI, sans-serif; font-weight:lighter; line-height:0em; color: #{{ site.accent }}; }
 h1 { font-size: 4em; }
 h2 { font-size: 3em; }
 h3 { font-size: 2.5em; }
-ul, li { padding-left:0; list-style:none;}
+ul { list-style:none; padding:0;}
+li { background:transparent url(img/listcircle.png) no-repeat; padding-left:30px; padding-bottom:15px;}
+a img { border :none;}
+#tweets ul { list-style:none; padding:0;}
+#tweets li {background:none; padding:0;}
 #screens { padding-top:75px;}
 #slider {  margin-left:45px; }
 #slider ul, #slider li 
@@ -16,9 +35,28 @@ ul, li { padding-left:0; list-style:none;}
 	padding:0;
 	list-style:none;
 }
-
+#phones {width: 300px; float:left;}
+#smallPhone 
+{
+	z-index:0;
+	position:fixed;
+	margin-top:150px;
+	background:transparent url(img/phonelayouts/focuss.png) no-repeat 100% 100%;
+	background-size: cover;
+	width:228px;
+	height:420px;
+	margin-left:-150px;
+}
+#smallPhone img {
+	margin-top:56px;
+	margin-left:20px;
+	width: 180px;
+	height: 300px;
+}
 #phone 
 {
+	position:fixed;
+	z-index:1;
 	margin-top:15px;
 	background:transparent url(img/phonelayouts/{{ site.phone }}.png) no-repeat;
 	
@@ -63,10 +101,9 @@ ul, li { padding-left:0; list-style:none;}
 }
 
 #container { max-width: 1000px; margin-left:auto; margin-right:auto; }
-#content, #phone, #tweets { float:left;}
 #content { margin-left: 25px; max-width:650px; margin-top:75px;}
+#content { float:left;margin-left:350px;}
 #clear { clear:both; }
 #tweets { width: 250px; }
 #tweets .tweet_list li { margin-bottom: 20px;} 
 #tweets span.tweet_time { display: block; text-align:right; margin-top:5px;}
-
